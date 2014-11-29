@@ -21,7 +21,7 @@ Make sure you have the flex library installed.  For example, `yum install flex`.
 
 To run:
 
-    cb sub
+    cd sub
     make
     cd ../cb
     make
