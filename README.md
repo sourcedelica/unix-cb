@@ -15,19 +15,24 @@ Unix-CB uses System V IPC for communication, shared memory and synchonization.
 
 I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...   Thanks to Gary we were able to get CB compiling again.   
 
-Installation
-------------
+.h3 Installation
 Make sure you have the flex library installed.  For example, `yum install flex`.
 
-To run:
+.h4 Compiling
 
     cd sub
     make
     cd ../cb
     # edit cb.h, set DEFBASE to the root of this project
     make
-    ./cbinit
+
+.h4 Running the first time
+
+    cb/cbinit
+    
+.h4 To run CB
+
     export PAID=T
-    ./cb
+    cb/cb
 
 Enjoy!
