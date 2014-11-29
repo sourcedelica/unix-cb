@@ -1,6 +1,7 @@
 URESSIZ=1
-CBINIT=/harmony/code/unix-cb/cb/cbinit
+CBINIT=/Users/ericpederson/Desktop/SKYNET/cb
 UNIXWHO=/usr/bin/who
 HOMEREC
 CBHELP=cbhelp
 CMDFILE=skycommands
+ENVPAID=PAID

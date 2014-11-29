@@ -13,9 +13,8 @@ CBOBJ = cb.o cbout.o cbinp.o cbetc.o cbcfg.o $(CBJIVE)
 BIN = ../bin
 SKYUSER= eric
 SUB= ../sub/sub.a
-#MSUB= ../msub/m_sub.a
 
-CFLAGS= 
+CFLAGS=
 EXES= cbinit CB cbtest
 
 #
@@ -25,9 +24,12 @@ EXES= cbinit CB cbtest
 #	*** Be sure to su to SKYUSER before running make
 #
 
-install: all setuid.m # copy.m
+install: all # setuid.m copy.m
 
 all: $(EXES)
+
+clean:
+	rm -f $(EXES) $(CBOBJ)
 
 copy.m: $(EXES)
 	cp $? $(BIN)
