@@ -13,10 +13,10 @@ A number of chat systems based on the CB user interface were developed in the 90
 
 Unix-CB uses System V IPC for communication, shared memory and synchonization.
 
-I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...
+I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...   Thanks to Gary we were able to get CB compiling again.   
 
-Thanks to Gary we were able to get it compiling again.   To run, edit `cb.h` and set `DEFBASE` to the root of the project directory (containing `cb`, `ced`, `cf` directories).
-
+Installation
+------------
 Make sure you have the flex library installed.  For example, `yum install flex`.
 
 To run:
@@ -24,6 +24,7 @@ To run:
     cd sub
     make
     cd ../cb
+    # edit cb.h, set DEFBASE to the root of this project
     make
     ./cbinit
     export PAID=T
