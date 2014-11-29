@@ -13,7 +13,10 @@ A number of chat systems based on the CB user interface were developed in the 90
 
 Unix-CB uses System V IPC for communication, shared memory and synchonization.
 
-It is currently not compiling.  It last compiled in the early 90s but things have changed since then.
-I'm sure there is a backwards-compatibility compile flag that will get it working.  Pull requests welcome! :) 
-
 I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...
+
+Thanks to Gary we were able to get it compiling again.   To run, edit `cb.h` and set `DEFBASE` to the root of the project directory (containing `cb`, `ced`, `cf` directories).
+
+You can give yourself subscription status by
+- Add `ENVPAID=PAID` to `cbconfig`
+- `export PAID=T`
