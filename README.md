@@ -20,12 +20,13 @@ Thanks to Gary we were able to get it compiling again.   To run, edit `cb.h` and
 Make sure you have the flex library installed.  For example, `yum install flex`.
 
 To run:
-- `cb sub`
-- `make`
-- `cd ../cb`
-- `make`
-- `./cbinit`
-- `export PAID=T`
-- `./cb`
+
+    cb sub
+    make
+    cd ../cb
+    make
+    ./cbinit
+    export PAID=T
+    ./cb
 
 Enjoy!
