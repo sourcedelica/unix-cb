@@ -131,6 +131,7 @@ char *s1;
 		*s1 = toupper( *s1 );
 }
 
+#if 0
 char *strstr( s1, s2 )
 char *s1, *s2;
 {
@@ -142,6 +143,7 @@ char *s1, *s2;
 			return( s1 );
 	return( NULL );
 }
+#endif
 
 #ifdef TESTING
 main()

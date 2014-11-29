@@ -16,7 +16,7 @@
  */
 
 extern char *getenv(), *maliasof(), *cuserid();
-
+#define L_cuserid 16
 char guserid[L_cuserid];
 char galias[L_alias];
 char gnode[L_cuserid];

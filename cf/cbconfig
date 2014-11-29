@@ -1,6 +1,6 @@
 URESSIZ=1
-CBINIT=/home/eric/cb/cbinit
-UNIXWHO=/usr/ucb/w
+CBINIT=/harmony/code/unix-cb/cb/cbinit
+UNIXWHO=/usr/bin/who
 HOMEREC
 CBHELP=cbhelp
 CMDFILE=skycommands

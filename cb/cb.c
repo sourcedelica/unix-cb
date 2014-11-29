@@ -613,7 +613,7 @@ int slot;
 		dosq( slot, i, SQ_SRESET|SQ_KRESET );
 }
 
-static void loadops( slot )
+/*static*/ void loadops( slot )
 int slot;
 {
 	/*	Loads the "opts" flag word with the correct
@@ -654,7 +654,7 @@ int slot;
 			MYREC.opts |= OP_COSYSOP;
 }
 
-static stty0()
+/*static*/ stty0()
 {
 	/*	Forces a hangup by setting the terminal's baud rate to
 		zero.  Implemented as a kludge to workaround

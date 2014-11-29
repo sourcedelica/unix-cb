@@ -35,7 +35,7 @@ char *t;
 	fclose(f);
 }
 
-static void catch( blah )
+/*static*/ void catch( blah )
 int blah;
 {
 	done = blah;

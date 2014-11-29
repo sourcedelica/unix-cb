@@ -13,7 +13,7 @@ int affirmd( prompt, dval )
 	return( waffirm(prompt, 1, dval) );
 }
 
-static int waffirm( prompt, isd, dval )
+/*static*/ int waffirm( prompt, isd, dval )
 char *prompt;
 int isd, dval;
 {

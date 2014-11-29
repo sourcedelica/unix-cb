@@ -272,6 +272,8 @@ char *cfname;
 	strcat( s, SKYCFDIR );
 	strcat( s, PATHSEP );
 	strcat( s, cfname == NULL ? CBCONFIG : cfname );
+
+printf("%s\n", s);
 	if( (p= rdctl( s )) == (char **)NULL )
 		return( -1 );
 	

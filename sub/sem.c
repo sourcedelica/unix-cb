@@ -67,7 +67,7 @@ int sid;
 }
 
 
-static int semcall( sid, op, flag )
+/*static*/ int semcall( sid, op, flag )
 int sid;
 int op;
 int flag;

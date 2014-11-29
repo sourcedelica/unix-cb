@@ -2,6 +2,7 @@
 #include <pwd.h>
 #include "../include/alias.h"
 
+#define L_cuserid 16
 /*
  *	Skynet
  *
