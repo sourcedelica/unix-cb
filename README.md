@@ -23,7 +23,7 @@ To run:
 - `cb sub`
 - `make`
 - `cd ../cb`
-- make
+- `make`
 - `./cbinit`
 - `export PAID=T`
 - `./cb`
