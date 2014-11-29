@@ -1,0 +1,3 @@
+
+All CB support files are stored in a subdirectory off the base Skynet
+directory.  This subdirectory will be symbolically called CBDIR here.

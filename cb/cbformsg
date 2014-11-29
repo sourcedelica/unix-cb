@@ -1,0 +1,23 @@
+The format of messages are controlled by a selection of format specifications.
+These specifications are preceeded by a %.  The following is a list of the
+supported format specifications.
+
+m - the actual message.  Always specify this or you will be confused.
+u - the sender's userid.  Capital 'U' right-justifies in 9 spaces.
+h - the user's handle
+s - the port (slot) of the sender.  Capital 'S' uses two digits always.
+c - the channel the message was sent on, or * if a private message
+C - same as 'c' but two digits always, or **.
+$ - $ if the sender is a member, otherwise nothing
+# - $ if the sender is a member, otherwise #
+* - * if the message is private, otherwise nothing
+P - P if the message is private, otherwise nothing
+[ - [ if member, ( if non-member, < if sysop (also try %])
+_ - carriage return     e - escape
+? - on a private message, $ if sent to all members, # to all non-members
+pc - Insert character 'c' if this is a private message
+\msg\ - Insert 'msg' if this is a private message
+
+Use @? to list predefined formats
+
+Enter new format or press RETURN to keep old format

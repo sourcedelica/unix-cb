@@ -1,0 +1,4 @@
+
+If the CB help file name is undefined, then /? will list all the commands
+that the user can do with his status level (sysop, paid, etc).  If defined
+it will simply list this file.

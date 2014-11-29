@@ -1,0 +1,61 @@
+
+SUBOBJ = sub(termio.o) sub(readdef.o) sub(nesig.o) sub(getmsg.o) \
+	sub(alias.o) sub(xstring.o) sub(freemsg.o) sub(cdate.o) \
+	sub(listsig.o) sub(sem.o) sub(getkey.o) sub(menuat.o) \
+	sub(getctl.o) sub(muserinf.o) sub(memdump.o) sub(readdef2.o) \
+	sub(datetime.o) sub(fm2re.o) sub(readdef3.o)
+
+RANLIB = ranlib sub
+
+LIB = /u/skynet/lib
+
+SYSVER= SYSV3
+
+CFLAGS= -Zi
+
+sub(readdef.o): readdef.c
+
+sub(getmsg.o): getmsg.c
+
+sub: $(SUBOBJ)
+	$(CC) -c -DUNIX -D$(SYSVER) $(CFLAGS) $(?:.o=.c)
+	ar rv sub $?
+	$(RANLIB)
+	rm $?
+	rm -f $(LIB)/$@
+	ln $@ $(LIB)
+
+.c.a:;
+
+getkey: getkey.c 
+	cc -O getkey.c  sub -D TESTING -o getkey
+
+termio: termio.c
+	cc -O -D TESTING termio.c -o termio
+
+getmsg: getmsg.c termio.o nesig.o readdef.o
+	cc -O -DTESTING -DUNIX getmsg.c termio.o nesig.o readdef.o -o getmsg -lmalloc
+
+readdef: readdef.c termio.o
+	cc -O -D TESTING readdef.c termio.o -o readdef
+
+readdef2: readdef2.c termio.o
+	cc -O -D TESTING readdef2.c termio.o -o readdef2
+
+readdef3: readdef3.c termio.o
+	cc -O -D TESTING $@.c termio.o -o $@
+
+alias: alias.c
+	cc -O -DTESTING alias.c -o alias
+
+xstring: xstring.c
+	cc -O -DTESTING xstring.c -o xstring
+
+cdate: cdate.c
+	$(CC) $(CFLAGS) -DTESTING -DUNIX cdate.c -o cdate
+
+fm2re: fm2re.c
+	$(CC) $(CFLAGS) -DTESTING -DUNIX fm2re.c -o fm2re
+
+datetime: datetime.c
+	cc -O datetime.c -o datetime

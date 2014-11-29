@@ -1,0 +1,11 @@
+
+The CB control flag is used to store configuration information about
+CB that can be changed on-the-fly.  The control flag may be set to an
+initial value with this setting.  The setting may be given in decimal,
+octal, or hexdecimal.  If octal is used, preface the number with a 0. 
+If hexidecimal is used, preface the number with a 0x.  To set multiple
+flags specify the addition of the flags.  The control flags used are
+(in octal):
+	01	Lock out CB
+	02	Unpaid users are read-only
+	04	Unvalidated users are read-only

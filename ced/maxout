@@ -1,0 +1,5 @@
+
+To cut down on obnoxious users uploading text files to CB, a limit may
+be placed on the number of unanswered public messages sent out.  When this
+limit is reached, the user is kicked off.  Separate limits may be set for
+paid and unpaid users.  Use -1 for no limit.

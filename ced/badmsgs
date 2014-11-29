@@ -1,0 +1,4 @@
+
+The following define the messages printed when a user without the
+proper access rights attempts to use a invalid command.  You may make
+them as descriptive or general as you see fit.

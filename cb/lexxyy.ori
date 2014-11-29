@@ -1,0 +1,684 @@
+# include "stdio.h"
+# define U(x) x
+# define NLSTATE yyprevious=YYNEWLINE
+# define BEGIN yybgin = yysvec + 1 +
+# define INITIAL 0
+# define YYLERR yysvec
+# define YYSTATE (yyestate-yysvec-1)
+# define YYOPTIM 1
+# define YYLMAX 200
+# define output(c) putc(c,yyout)
+# define input() (((yytchar=yysptr>yysbuf?U(*--yysptr):getc(yyin))==10?(yylineno++,yytchar):yytchar)==EOF?0:yytchar)
+# define unput(c) {yytchar= (c);if(yytchar=='\n')yylineno--;*yysptr++=yytchar;}
+# define yymore() (yymorfg=1)
+# define ECHO fprintf(yyout, "%s",yytext)
+# define REJECT { nstr = yyreject(); goto yyfussy;}
+int yyleng; extern char yytext[];
+int yymorfg;
+extern char *yysptr, yysbuf[];
+int yytchar;
+FILE *yyin = {stdin}, *yyout = {stdout};
+extern int yylineno;
+struct yysvf { 
+	struct yywork *yystoff;
+	struct yysvf *yyother;
+	int *yystops;};
+struct yysvf *yyestate;
+extern struct yysvf yysvec[], *yybgin;
+	char buf[128];
+	extern char *cbjs, *cbjt;
+
+#undef input
+#define input()		cbjin()
+#undef unput
+#define unput(x)	cbjun(x)
+
+# define YYNEWLINE 10
+yylex(){
+int nstr; extern int yyprevious;
+while((nstr = yylook()) >= 0)
+yyfussy: switch(nstr){
+case 0:
+if(yywrap()) return(0); break;
+case 1:
+			produce(" stash");
+break;
+case 2:
+			produce(" t'row");
+break;
+case 3:
+			produce(" honky code");
+break;
+case 4:
+			produce(" Isaac");
+break;
+case 5:
+			produce(" slow mo-fo");
+break;
+case 6:
+			produce(" that slow mo-fo");
+break;
+case 7:
+			produce(" snatch'd");
+break;
+case 8:
+			produce(" wet-back");
+break;
+case 9:
+			produce(" wet-back");
+break;
+case 10:
+			produce(" greaser");
+break;
+case 11:
+			produce(" greaser");
+break;
+case 12:
+			produce(" snatch");
+break;
+case 13:
+			produce(" duzn't");
+break;
+case 14:
+			produce(" JIBE");
+break;
+case 15:
+			produce(" honkyfool");
+break;
+case 16:
+			produce(" doodad");
+break;
+case 17:
+		produce("e da damn ");
+break;
+case 18:
+		produce("a da damn ");
+break;
+case 19:
+		produce("t da damn ");
+break;
+case 20:
+		produce("d da damn ");
+break;
+case 21:
+                    produce(" dude ");
+break;
+case 22:
+			produce("mama");
+break;
+case 23:
+			produce("goat");
+break;
+case 24:
+		produce("sump'n");
+break;
+case 25:
+		produce(" honky jibe ");
+break;
+case 26:
+                    produce(" -on rebound- ");
+break;
+case 27:
+		produce(" -check y'out latah-");
+break;
+case 28:
+	{ sprintf(buf, "%s  Sheeeiit.",yytext); produce(buf); }
+break;
+case 29:
+	{ sprintf(buf, "%s  What it is, Mama!",yytext); produce(buf); }
+break;
+case 30:
+	{ sprintf(buf, "%s  Ya' know?",yytext); produce(buf); }
+break;
+case 31:
+	{ sprintf(buf, "%s  'S coo', bro.",yytext); produce(buf); }
+break;
+case 32:
+	{ sprintf(buf, "%s  Ah be baaad...",yytext); produce(buf); }
+break;
+case 33:
+	{ sprintf(buf, "%s  Man!",yytext); produce(buf); }
+break;
+case 34:
+	{ sprintf(buf, "%s  Slap mah fro!",yytext); produce(buf); }
+break;
+case 35:
+		produce("Sho' nuff");
+break;
+case 36:
+		produce("sho' nuff");
+break;
+case 37:
+			produce(" git");
+break;
+case 38:
+		produce("gots'ta");
+break;
+case 39:
+			produce("gots'ta ");
+break;
+case 40:
+		produce("gots'ta");
+break;
+case 41:
+			produce("I's gots'ta be");
+break;
+case 42:
+			produce("aint");
+break;
+case 43:
+			produce("aint");
+break;
+case 44:
+			produce("aint");
+break;
+case 45:
+			produce(" is yo'");
+break;
+case 46:
+			produce(" you is");
+break;
+case 47:
+                    produce(" fedora ");
+break;
+case 48:
+                   produce(" kicker");
+break;
+case 49:
+			produce("aint");
+break;
+case 50:
+		produce("gots'ta");
+break;
+case 51:
+			produce("gots'");
+break;
+case 52:
+			produce(" gots'ta");
+break;
+case 53:
+		produce("mosey on down");
+break;
+case 54:
+                   produce(" mosey on down ");
+break;
+case 55:
+                      produce(".  Right On!  ");
+break;
+case 56:
+			produce("steal");
+break;
+case 57:
+                    produce(" wheels ");
+break;
+case 58:
+			produce("roll");
+break;
+case 59:
+                    produce(" feed da bud ");
+break;
+case 60:
+                  produce(" brother ");
+break;
+case 61:
+                  produce(" brother");
+break;
+case 62:
+				produce("honky");
+break;
+case 63:
+                 produce(" gentleman ");
+break;
+case 64:
+			produce("supa' fine");
+break;
+case 65:
+		produce("sucka'");
+break;
+case 66:
+                  produce(" wahtahmellun");
+break;
+case 67:
+				produce("plantation");
+break;
+case 68:
+			produce("dojigger");
+break;
+case 69:
+                   produce(" alley");
+break;
+case 70:
+		produce("clunker");
+break;
+case 71:
+			produce("o'");
+break;
+case 72:
+			produce("wasted");
+break;
+case 73:
+		produce("super-dude");
+break;
+case 74:
+	produce("super honcho");
+break;
+case 75:
+			produce("hosed");
+break;
+case 76:
+		produce("guv'ment");
+break;
+case 77:
+			produce("knowed");
+break;
+case 78:
+			produce("a'cuz");
+break;
+case 79:
+			produce("A'cuz");
+break;
+case 80:
+			produce("yo'");
+break;
+case 81:
+			produce("Yo'");
+break;
+case 82:
+			produce("foe");
+break;
+case 83:
+			produce("gots");
+break;
+case 84:
+			produce("ain't");
+break;
+case 85:
+			produce("yung");
+break;
+case 86:
+			produce("ya'");
+break;
+case 87:
+			produce("You's");
+break;
+case 88:
+			produce("fust");
+break;
+case 89:
+			produce("honky pigs");
+break;
+case 90:
+                 produce(" chittlin'");
+break;
+case 91:
+	produce(" eyeball");
+break;
+case 92:
+			produce("scribble");
+break;
+case 93:
+			produce("d");
+break;
+case 94:
+			produce("D");
+break;
+case 95:
+			produce("in'");
+break;
+case 96:
+		produce(" some ");
+break;
+case 97:
+		produce(" t'");
+break;
+case 98:
+			produce("shun");
+break;
+case 99:
+		produce(" mos' ");
+break;
+case 100:
+		produce(" fum");
+break;
+case 101:
+	produce(" cuz' ");
+break;
+case 102:
+	produce("youse");
+break;
+case 103:
+	produce("Youse");
+break;
+case 104:
+		produce("coo'");
+break;
+case 105:
+		produce("coo'");
+break;
+case 106:
+		produce("a' ");
+break;
+case 107:
+		produce("knode");
+break;
+case 108:
+		produce("wants'");
+break;
+case 109:
+		produce("whup'");
+break;
+case 110:
+		produce("'sp");
+break;
+case 111:
+		produce("'s");
+break;
+case 112:
+		produce(" 's");
+break;
+case 113:
+		produce(" 'es");
+break;
+case 114:
+		produce("likes");
+break;
+case 115:
+			produce("dun did");
+break;
+case 116:
+		produce("kind'a");
+break;
+case 117:
+			produce("honky chicks");
+break;
+case 118:
+			produce(" dudes ");
+break;
+case 119:
+		produce(" dudes ");
+break;
+case 120:
+			produce(" dude ");
+break;
+case 121:
+			produce("honky chick");
+break;
+case 122:
+		produce("wasted");
+break;
+case 123:
+		produce("baaaad");
+break;
+case 124:
+			produce("jimmey ");
+break;
+case 125:
+		produce("jimmey'd ");
+break;
+case 126:
+			produce(" real");
+break;
+case 127:
+			produce("puh'");
+break;
+case 128:
+			produce("puh'");
+break;
+case 129:
+			produce("o'");
+break;
+case 130:
+			produce(" kin");
+break;
+case 131:
+			produce("plum ");
+break;
+case 132:
+		produce("Mo-town");
+break;
+case 133:
+	produce("da' cave");
+break;
+case 134:
+		produce(" recon'");
+break;
+case 135:
+	produce("Nap-town");
+break;
+case 136:
+		produce(" Buckwheat");
+break;
+case 137:
+	produce(" Liva' Lips ");
+break;
+case 138:
+	produce(" dat fine soul ");
+break;
+case 139:
+	produce(" Amos ");
+break;
+case 140:
+	produce("Leroy");
+break;
+case 141:
+	produce("dat fine femahnaine ladee");
+break;
+case 142:
+	produce("Raz'tus ");
+break;
+case 143:
+	produce(" Fuh'rina");
+break;
+case 144:
+	produce("Kingfish");
+break;
+case 145:
+	produce("Issac");
+break;
+case 146:
+	produce("Rolo");
+break;
+case 147:
+	produce(" Bo-Jangles ");
+break;
+case 148:
+	produce(" Snow Flake");
+break;
+case 149:
+	produce("Remus");
+break;
+case 150:
+	produce("Massa' ");
+break;
+case 151:
+	produce("Massa' ");
+break;
+case 152:
+		produce("liva' lips");
+break;
+case 153:
+			produce("wiz'");
+break;
+case 154:
+			produce("wiz'");
+break;
+case 155:
+			produce("dat commie rag");
+break;
+case 156:
+			produce("bugger'd");
+break;
+case 157:
+		produce("funky ");
+break;
+case 158:
+		produce("boogy ");
+break;
+case 159:
+		produce(" crib");
+break;
+case 160:
+			produce("ax'");
+break;
+case 161:
+			produce(" so's ");
+break;
+case 162:
+			produce("'haid");
+break;
+case 163:
+			produce("main man");
+break;
+case 164:
+			produce("mama");
+break;
+case 165:
+			produce("sucka's");
+break;
+case 166:
+			produce("bre'd");
+break;
+case 167:
+			produce("begina'");
+break;
+case 168:
+				produce("transista'");
+break;
+case 169:
+			produce(" uh ");
+break;
+case 170:
+			produce("whut");
+break;
+case 171:
+			produce("duz");
+break;
+case 172:
+			produce("wuz");
+break;
+case 173:
+			produce(" wuz");
+break;
+case 174:
+		produce("dig it");
+break;
+case 175:
+		produce("dig it");
+break;
+case 176:
+			produce(" mah'");
+break;
+case 177:
+		produce(" ah' ");
+break;
+case 178:
+			produce("meta-fuckin'");
+break;
+case 179:
+		produce("fro");
+break;
+case 180:
+		produce("rap");
+break;
+case 181:
+		produce("beat");
+break;
+case 182:
+	produce("hoop");
+break;
+case 183:
+	produce("ball");
+break;
+case 184:
+	produce("homey");
+break;
+case 185:
+	produce("farm");
+break;
+case 186:
+		produce("Man");
+break;
+case 187:
+	produce("wanna");
+break;
+case 188:
+	produce("be hankerin' aftah");
+break;
+case 189:
+		produce("sheeit");
+break;
+case 190:
+		produce("Sheeit");
+break;
+case 191:
+		produce("big-ass");
+break;
+case 192:
+		produce("bad-ass");
+break;
+case 193:
+		produce("little-ass");
+break;
+case 194:
+	produce("radical");
+break;
+case 195:
+		produce(" be ");
+break;
+case 196:
+		produce("booze");
+break;
+case 197:
+		produce("scribblin'");
+break;
+case 198:
+	produce("issue of GQ");
+break;
+case 199:
+		produce("sheet");
+break;
+case 200:
+		produce("down");
+break;
+case 201:
+		produce("waaay down");
+break;
+case 202:
+		produce("boogie");
+break;
+case 203:
+		produce("'Sup, dude");
+break;
+case 204:
+		produce("pink Cadillac");
+break;
+case 205:
+		produce(yytext);
+break;
+case 206:
+		produce("\n");
+break;
+case -1:
+break;
+default:
+fprintf(yyout,"bad switch yylook %d",nstr);
+} return(0); }
+/* end of yylex */
+
+cbjin()
+{
+	return( *(cbjs++) );
+}
+
+cbjun(c)
+int c;
+{
+	
+	*(--cbjs) = c;
+}
+
+produce( s )
+char *s;
+{
+	strcat( cbjt, s );
+}

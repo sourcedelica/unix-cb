@@ -1,0 +1,39 @@
+SUBOBJ = m_sub.a(m_act.o) m_sub.a(m_at.o) m_sub.a(m_ch.o) m_sub.a(m_msg.o) \
+	m_sub.a(m_print.o) m_sub.a(m_who.o)
+
+RANLIB = ranlib m_sub.a
+
+LIB = /u/skynet/lib
+
+SYSVER= SUNOS
+
+#CFLAGS= -O
+CFLAGS= -go
+
+m_sub.a: $(SUBOBJ)
+	$(CC) -c -DUNIX -D$(SYSVER) $(CFLAGS) $(?:.o=.c)
+	ar rv $@ $?
+	$(RANLIB)
+	rm $?
+	rm -f $(LIB)/$@
+	ln $@ $(LIB)
+
+.c.a:;
+
+m_sub(m_act.o): m_act.c
+	$(CC) $(CFLAGS) -c m_act.c
+
+m_sub(m_at.o): m_at.c
+	$(CC) $(CFLAGS) -c m_at.c
+
+m_sub(m_ch.o): m_ch.c
+	$(CC) $(CFLAGS) -c m_ch.c
+
+m_sub(m_msg.o): m_msg.c
+	$(CC) $(CFLAGS) -c m_msg.c
+
+m_sub(m_print.o): m_print.c
+	$(CC) $(CFLAGS) -c m_print.c
+
+m_sub(m_who.o): m_who.c
+	$(CC) $(CFLAGS) -c m_who.c

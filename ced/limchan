@@ -1,0 +1,5 @@
+
+The limited channels feature allows you to set up a range of 1 to N
+channels that hold a maximum of 1 to N users, respectfully.  To use this
+feature, first enable it, then set the "base" channel for the limited
+channel series, and the number of limited channels.

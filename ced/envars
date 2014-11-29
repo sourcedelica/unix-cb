@@ -1,0 +1,5 @@
+
+CB access rights may be set by the presence of environment variables.
+This method may be enabled for those sysops who like to run CB from the
+shell.  It provides a blatant security hole and should therefore be used
+only in systems where shell accounts are limited or non-existant.

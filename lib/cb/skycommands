@@ -1,0 +1,49 @@
+# NOTE: the use of ; as delimter rules out its use as a command
+# Sorry about that.
+A;#;AS;List users on CB
+B;%;B;Boot user off CB
+C;#;C;Change Channel
+D;$;D;Send station private message
+E;#;E;List people typing
+F;#;F;Change message or active format
+G;$;G;Log off silently
+H;#;H;Change handle
+I;%;I;Get info on another user
+J;*;J;
+K;$;K;Kick user off CB
+L;#;L;Toggle channel listing
+M;$;M;Toggle monitoring of channel 1
+N;%;N;Send a message on another channel
+O;#;O;Sign off CB and the system
+P;$;P;Send a private message
+Q;#;Q;Sign off CB
+R;#;R;Private chat
+T;#;T;Display time status
+U;#;U;Change linefeed character
+V;%;V;Change another user's time
+X;$;X;Squelch a user
+Y;#;Y;Your status
+Z;@;Z;Send a PA message
+1;#;1;Toggle beeps
+2;#;2;Toggle linefeeds
+3;#;3;Toggle ANSI output
+4;#;4;Toggle station message squelch
+5;$;5;Toggle Jive translation
+6;#;6;Toggle beeps on PA messages
+8;%;8;Toggle squelch of non-chan msgs
+!;*;!;Shell escape
+9;*;;
+$;#;$W;Who is on Skynet
+%;$;%;Page a user on Skynet
+^;*;^;Modify another users flags
+*;*;*;
+-;@;-;Deactivate another user
++;@;+;Activate another user
+.;%;.;Toggle self active status
+=;*;=;Modify another user
+>;*;>;Change CB status flags
+/;$;/;Send private message to same person
+,;#;,;Send private message to last sender
+@;@;@;Send a raw message to a user
+&;%;&;Ungag user
+?;#;?;Help

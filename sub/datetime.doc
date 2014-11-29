@@ -1,0 +1,39 @@
+Function
+	datetime - return a date/time in form of string format.
+
+Synopsis
+
+	char *datetime(format,time);
+	char	*format;
+	long	time;
+
+Description
+
+	The format string supplies format modifiers (preceded by a '%') to
+	determine what is returned, and where.
+
+	the following modifiers are valid:
+
+
+	%Y	4-char year
+	%y	2-char year	(i.e. 88, 89)
+	%H	hour		(24 hour format)
+	%h	hour		(12 hour format)
+	%a	am/pm		(lowercase)
+	%A	AM/PM		(uppercase)
+	%w	weekday		(3 characters)
+	%W	weekday		(full name)
+	%o	month name	(3 characters)
+	%O	month name	(full name)
+	%t	timezone	(returns timezone DST taken into consideration)
+	%T	timezone	(returns getenv("TZ"))
+	%s	seconds
+	%m	minutes
+	%d	day number of month
+	%#	day of year 	(0-365)
+	%n	month number
+
+Files
+
+	datetime is included in the /usr/skynet/sub/sub library file.
+

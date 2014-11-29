@@ -1,0 +1,3 @@
+
+When a user is inactive in CB, the following string is loaded into his Skynet
+"doing" field (if applicable).

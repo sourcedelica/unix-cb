@@ -1,0 +1,9 @@
+   %#%S Ch %C%L %u/%h %d %m;Default
+   [S:%S C:%C] %u|%h %d %m;Mig Comprehensive 
+   %[%C/%S%] %u/%h %d %m;Al's big-boner active
+   %S %[Ch: %C%] %u/%h %d %m;Another one of al's
+%C%$%S %u %h: %d;Quark Master approved
+[%#][%S] {Ch %C} (%L) %u/%h %d %m;Chris Tok'n
+ %S%#%c %[%U%] %h %d %m;Datatrex
+Ch:%C / Slot:%S [id:(%#)%U] Handle: {%h} %d;jpj's format
+[%#] Channel #%C/ Slot #%S  (%U)  Handle: %h  %d;Me's

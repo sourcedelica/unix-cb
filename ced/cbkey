@@ -1,0 +1,6 @@
+
+The IPC key is a unique integer used to determine which set of
+interprocess communication facilities are being used.  Normally it
+will not be changed, but if the need arises to set up two CBs, you
+will need to make the other CB program a different IPC key (along
+with a different message file).

@@ -1,0 +1,5 @@
+
+The login message is printed every time the user logs into CB.  The
+following substitution variables are defined:
+	%v	Current CB software version
+	%n	Newline

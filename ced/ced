@@ -1,0 +1,74 @@
+cf/ced/cb
+DEBUG;N;0;;Debug level (0 for off)
+CBKEY;N;88;cbkey;CB IPC Key value
+NUMSLOTS;N;35;numslots;Number of CB slots
+URESSIZ;N;15;uressiz;Number of reserved CB slots for skynet
+CBDIR;C;lib/cb;cbfiles;Directory other CB files are stored in (CBDIR)
+CMDFILE;C;cmds;;Name of file (in CBDIR) where the CB command mappings are stored
+OUTFILE;C;cbout;cbout;Name of CB message file (in CBDIR)
+FSIZE;N;2000;;Number of entries in CB message file
+CBINIT;C;;;CB init program name, include path and > /dev/null if needed
+UNIXWHO;C;;;Unix who program for /w
+HOMEREC;F;;recs;Are CB records stored in home directory?
+RECNAME;C;.cb;;CB record name if stored in home directory
+RECDIR;C;recs;;Directory (off CBDIR) records are stored in if not in home
+CBHELP;C;-;cbhelp;Name of CB help file
+MAXCHAN;N;99;blank;Maximum number of CB channels
+LIMCHAN;F;;limchan;Enable limited channels feature?
+LIMBASE;N;90;;Base channel for limiting
+LIMIT;N;9;;Number of limited channels
+MONCHAN;N;0;monchan;Monitored channel (0 for none)
+MONBASE;N;80;;Base channel for auto-monitoring
+MONLIM;N;9;;Number for auto-monintoring channels
+MONPAY;F;;;Is paid status required for auto-monitoring channels?
+LFCHAR;C;~;blank;Default embedded linefeed character
+PAIDLF;F;;;Is paid status required to use embedded linefeeds?
+MAXNL;N;14;;Maximum number of embedded linefeeds
+MAXMYOUT;N;7;maxout;Maximum number of unanswered public messages before auto-logoff
+MAXPOUT;N;24;;Maximum number of unans msgs for paid users before auto-logoff
+MAXUOUT;N;50;;Maximum number of unans msgs for ugly links
+FAKEOUT;C;Main Menu;fakeout;Change skynet doing to this for inactive users
+AFORDEF;C; %$%S Ch %C %u/%h %d %m;formats;Default active format
+FORDEF;C;%*%#%S%*%? %u/%h: %m;;Default message format
+DOSHELL;C;(Shell Escape);blank;CB doing for shell escape
+DOFORM;C;(Changing Format);;CB doing for format change
+DOINACT;C;(Inactive);;CB doing for inactive users
+DOTYPE;C;(Typing);;CB doing for typing users
+DODORK;C;(Private Chat);;CB doing for users in private chat shell escape
+PAIDDC;F;;blank;Is paid status required to initiate private chat requests?
+CBLOGIN;C;Unix CB version %v;login;Login message
+LOCKEDMSG;C;CB is unavailable at this time;blank;CB locked out message
+ICTLVAL;N;0;ictlval;Initial CB control flag value
+PINITCHAN;N;1;blank;Initial sign-on channel for paid CB users
+INITCHAN;N;1;;Initial sign-on channel for regular CB users
+UINITCHAN;N;1;;Initial sign-on channel for ugly links
+RCLOW;N;1;rcs;Regular user low channel limit
+RCHIGH;N;10;;Regular user high channel limit
+AFORCEH;F;;blank;Force handle to Skynet alias for all users?
+FORCEH;F;;;Force handle to Skynet alias for unpaid users?
+AFORCEL;F;;blank;Force channels to be listed for all users?
+FORCEL;F;;;Force channels to be listed for regular users?
+MSGPBAD;C;Command requires subscription;badmsgs;Paid status required
+MSGSBAD;C;Invalid command;;Sysop status required
+MSGVBAD;C;Invalid command;;VIP status required
+MSGCBAD;C;Invalid command;;Co-sysop status required
+MSGBAD;C;Invalid command;;General bad command (invalid key)
+ENVPAID;C;-;envars;Environment variable checked to mark paid status
+ENVSYSOP;C;-;;Environment variable checked to mark sysop status
+ENVCOSYSOP;C;-;;Environment variable checked to mark cosysop status
+ENVVIP;C;-;;Environment variable checked to mark VIP status
+ENVVALID;C;-;;Environment variable checked to mark validated status
+WRITELEV;N;-;writelev;Skynet level needed to send messages
+DAILY;C;-;blank;Name of file (in CBDIR) printed out at login
+KPERCENT;N;100;blank;Percentage of paying users needed to vote to kick off a user
+QUOTA;N;-;quota;Maximum time per day that a co-sysop can grant
+COACT;F;;blank;Do cosysops have inactive powers?
+COPASSX;F;;;Do cosysops have passive squelch powers?
+COONE;F;;;Do cosysops have one-vote kill powers?
+COPPA;F;;;Can cosysops read private PA messages?
+COLOCKOV;F;;;Can cosysops sign on CB when it is locked out?
+CONEGV;F;;;Can cosysops subtract time?
+COKGLOB;F;;;Can cosysops do global kills?
+COKINACT;F;;;Can cosysops one-vote kill while inactive?
+COKPAID;F;;;Can cosysops kill subscribers?
+LOGCOPAS;F;;;Should cosysop actions be logged to a file?

@@ -1,0 +1,5 @@
+
+A number of slots are considered "reserved" for users running Skynet so that
+their CB slot number will equal their Skynet slot number.  The following
+setting should be equal to the number of slots that Skynet reserves for
+itself using the menuinit program.

@@ -1,0 +1,3 @@
+
+In addition to the CB control flags, a general setting may be used to
+make CB read-only for users with a Skynet level less than this setting.

@@ -1,0 +1,20 @@
+
+The format of the active listing are controlled by a selection of format
+specifications.  These specifications are preceeded by a %.  The following
+is a list of the supported format specifications.
+
+u - the user's userid.  Capital 'U' right-justifies in 9 spaces.
+h - the user's handle
+s - the port (slot) of the user.  Capital 'S' uses two digits always.
+c - the channel the user is on, or ? if unlisted and * if on your channel.
+C - same as 'c' but two digits always, or ?? and **.
+d - what is the user doing, if anything special
+e - escape
+$ - $ if the user is a subscriber, otherwise nothing
+# - $ if the user is a subscriber, otherwise #
+[ - [ if the user is a subscriber, otherwise (.  ']' works similarly.
+_ - inserts a carraige return in the format
+
+Use @? to list predefined formats
+
+Enter new format or press RETURN to keep old format

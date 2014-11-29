@@ -1,0 +1,8 @@
+
+The channel monitoring feature allows you to specify one channel to
+be considered "public" and be monitored by users when they are on other
+channels.  The "monitor" command (usually /m) may be enabled to allow
+users to listen to this channel from any channel.  In addition to the
+"monitor" command, a range of channels may be set up similar to the
+limited channel series that will automatically monitor the channel set
+here.

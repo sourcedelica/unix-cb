@@ -1,0 +1,3 @@
+
+The QUOTA setting may be used to limit the amount of time a co-sysop may
+give in a day.  It should be set to -1 for no limit.

@@ -1,0 +1,4 @@
+
+CB user records keep the non-transient information for each user in a file
+that may be stored either in the user's home directory or in a subdirectory
+off CBDIR that holds only CB user records.

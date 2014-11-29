@@ -1,0 +1,4 @@
+
+CB uses a circular file to hold pending messages.  This file may be
+increased or decreased in size by changing this setting.  A large setting
+may be specified to hold a large number of messages.

@@ -1,0 +1,29 @@
+
+UNIX CB
+
+All commands are preceded by /
+
+a - active users on CB (or /s)
+c - change channel
+d - send station message
+f - change output format
+h - change handle
+k - boot user
+l - toggle channel listing
+m - monitor channel one
+o - fast log off system
+p - send private message
+, - send private message to sender of last
+/ - send private message to same person
+q - log off CB
+r - enter private chat mode
+t - time status
+u - change linefeed char
+x - squelch user
+y - your status
+$ - who is on the system
+% - page another user
+1 - toggle beeps             2 - toggle linefeeds
+3 - toggle ANSI output       4 - toggle station message squelch
+5 - toggle Jive translation
+
