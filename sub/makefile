@@ -18,7 +18,7 @@ SYSVER= BSD
 CFLAGS= -g -Wtraditional
 
 sub.a: $(SUBOBJ)
-	$(CC) $(CFLAGS) -c -DUNIX -D$(SYSVER) -DNO_STRDUP $(?:.o=.c)
+	$(CC) $(CFLAGS) -c -DUNIX -D$(SYSVER) $(?:.o=.c)
 	ar rv sub.a $?
 	$(RANLIB)
 	rm $?

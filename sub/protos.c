@@ -188,7 +188,7 @@ struct probuf *pbuf;
 }
 
 
-static char *prodefault()
+/*static*/ char *prodefault()
 {
 	/*	Handles requests for the default protocol file
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <termio.h>
 #include <ctype.h>
 #include <string.h>
@@ -35,7 +36,7 @@
 #define ACT_WRAP        3
 #define ACT_CMD         4
 
-extern char *malloc(), *calloc(), *getenv();
+/*extern char *malloc(), *calloc(), *getenv();*/
 
 static int gabort();
 static int gadd();
@@ -87,7 +88,7 @@ int maxllen;
                         act = ACT_CMD;
                         s[1] = 'E';
                 } else
-                        act = getline( maxllen, s, w );
+                        act = _getline( maxllen, s, w );
 
                 switch( act ){
 
@@ -130,7 +131,7 @@ int maxllen;
 
 /***/
 
-int getline( maxllen, s, w )
+int _getline( maxllen, s, w )
 int maxllen;
 char *s;
 char *w;
@@ -246,7 +247,7 @@ int maxllen;
 
 /***/
 
-static int gcmd( pline, s, msg, cmd, maxlines, maxllen )
+/*static*/ int gcmd( pline, s, msg, cmd, maxlines, maxllen )
 int *pline;
 char *s;
 char **msg;
@@ -339,7 +340,7 @@ int noval;
 
 /***/
 
-static void glist( msg )
+/*static*/ void glist( msg )
 char **msg;
 {
         char x;
@@ -385,7 +386,7 @@ char **msg;
 }
 
 #ifdef UNIX
-static void ecatch( blah )
+/*static*/ void ecatch( blah )
 int blah;
 {
         putchar('\n');
@@ -395,7 +396,7 @@ int blah;
 
 /***/
 
-static char *gctr( s, maxllen )
+/*static*/ char *gctr( s, maxllen )
 char *s;
 int maxllen;
 {
@@ -415,7 +416,7 @@ int maxllen;
         return( s );
 }
         
-static int gedit( pline, msg, maxlines, maxllen )
+/*static*/ int gedit( pline, msg, maxlines, maxllen )
 int *pline;
 char **msg;
 int maxlines;
@@ -513,7 +514,7 @@ int maxllen;
 
 /***/
 
-static void getitle( maxllen )
+/*static*/ void getitle( maxllen )
 int maxllen;
 {
         char *x;
@@ -538,7 +539,7 @@ int maxllen;
  
 /***/
 
-static int genew( pline, msg, maxlines )
+/*static*/ int genew( pline, msg, maxlines )
 int *pline;
 char **msg;
 int maxlines;
@@ -563,7 +564,7 @@ int maxlines;
 
 /***/
 
-static void geinsert( pline, msg, maxlines, maxllen )
+/*static*/ void geinsert( pline, msg, maxlines, maxllen )
 int *pline;
 char **msg;
 int maxlines;
@@ -592,7 +593,7 @@ int maxllen;
         
 /***/
 
-static void gedelete( pline, msg )
+/*static*/ void gedelete( pline, msg )
 int *pline;
 char **msg;
 {
@@ -619,7 +620,7 @@ char **msg;
                 
 /***/
 
-static gereplace( line, msg, maxllen )
+/*static*/ gereplace( line, msg, maxllen )
 int line;
 char **msg;
 int maxllen;
@@ -641,7 +642,7 @@ int maxllen;
 
 /***/
         
-static int gnum( pr, high, low, msg )
+/*static*/ int gnum( pr, high, low, msg )
 char *pr;
 int high;
 int low;

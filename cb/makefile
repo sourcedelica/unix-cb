@@ -9,10 +9,10 @@ FOBJ = cbfix.o
 
 CBJIVE = jive.o
 #CBOBJ = CB.o cbout.o cbinp.o cbetc.o dorky.o cbcfg.o $(CBJIVE)
-CBOBJ = CB.o cbout.o cbinp.o cbetc.o cbcfg.o $(CBJIVE)
+CBOBJ = cb.o cbout.o cbinp.o cbetc.o cbcfg.o $(CBJIVE)
 BIN = ../bin
 SKYUSER= eric
-#SUB= ../sub/sub.a
+SUB= ../sub/sub.a
 #MSUB= ../msub/m_sub.a
 
 CFLAGS= 
@@ -41,7 +41,7 @@ cbinit:	$(IOBJ)
 	$(CC) $(CFLAGS) $(IOBJ) -o $@ $(SUB)
 
 CB: $(CBOBJ)
-	$(CC) $(CFLAGS) $(CBOBJ) -o $@ -ll $(SUB)
+	$(CC) $(CFLAGS) $(CBOBJ) -lfl -o $@ $(SUB)
 
 cbtest: $(CBOBJ)
 	$(CC) $(CFLAGS) $(CBOBJ) -o $@ -ll $(SUB)
