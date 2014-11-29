@@ -17,6 +17,18 @@ I put the code up on GitHub for sentimental reasons. I would have all of the cod
 
 Thanks to Gary we were able to get it compiling again.   To run, edit `cb.h` and set `DEFBASE` to the root of the project directory (containing `cb`, `ced`, `cf` directories).
 
+Make sure you have the flex library installed.  For example, `yum install flex`.
+
 You can give yourself subscription status by
 - Add `ENVPAID=PAID` to `cbconfig`
 - `export PAID=T`
+
+To run:
+- `cb sub`
+- `make`
+- `cd ../cb`
+- make
+- `./cbinit`
+- `./cb`
+
+Enjoy!
