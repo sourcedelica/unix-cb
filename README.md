@@ -9,7 +9,7 @@ CB was originally written in Fortran for an IBM/370 mainframe running [MUSIC](ht
 
 CB was part of Skynet, a multi-line BBS package. [Morrison Hotel](http://bbslist.textfiles.com/714/oldschool.html).  Morrison Hotel was the first (and regrettably, only) Skynet BBS, based in Orange County, CA in the mid-late 80s
 
-A number of chat systems based on the Unix-CB user interface were developed in the 90s, including [Unix-CB](https://github.com/ggrossman/unix-cb) by Gary Grossman (which was used by [Vrave](http://hyperreal.org/raves/vrave/).  If you want to see what it was like there is a running replica called Enormous Trousers at telnet://chat.f4.ca:6623.
+A number of chat systems based on the Unix-CB user interface were developed in the 90s, including [Unix-CB](https://github.com/ggrossman/unix-cb) by Gary Grossman (which was used by [Vrave](http://hyperreal.org/raves/vrave/).  If you want to see what it was like there is a running replica called Enormous Trousers.  At your command line run `telnet chat.f4.ca 6623`.
 
 Unix-CB uses System V IPC for communication, shared memory and synchonization.
 
