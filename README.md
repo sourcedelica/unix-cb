@@ -11,9 +11,14 @@ CB was part of Skynet, a multi-line BBS package. [Morrison Hotel](http://bbslist
 
 A number of chat systems based on the CB user interface were developed in the 90s, including [Unix-CB](https://github.com/ggrossman/unix-cb) by Gary Grossman (which was used by the hugely popular [Vrave](http://hyperreal.org/raves/vrave/)).  If you want to see what it was like there is a running replica called Enormous Trousers.  At your command line run `telnet chat.f4.ca 6623`.
 
-Unix-CB uses System V IPC for communication, shared memory and synchonization.
+Unix-CB uses System V IPC for communication, shared memory and synchonization.  It splits into two processes, one for 
+input and one for output (there were no threads back in those days).  While input is happening it raises a semaphore to 
+block the output.
 
-I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...   Thanks to Gary we were able to get CB compiling again.   
+I put the code up on GitHub for sentimental reasons. I would have put up all of the code for Skynet but unfortunately it appears to be lost forever...   
+
+## Contributors
+- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.
 
 ## Installation
 Make sure you have the flex library installed.  For example, `yum install flex`.
