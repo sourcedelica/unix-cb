@@ -113,14 +113,11 @@ char *s;
 	char xj[MSGLEN+40];
 
 	if( MYREC.opts & OP_JIVE ){
-		cbjl = MSGLEN;
-		cbjs = s;
-		cbjt = xj;
-		*cbjt = 0;
-		while( yylex() != 0 )
-			;
-		*(cbjt+MSGLEN) = 0;
-		strcpy( s, cbjt );
+        void do_jive(char *in, char *out, int maxlen);
+        printf("s=%s\n", s);
+        do_jive(s, xj, MSGLEN);
+		strcpy(s, xj);
+        printf("s=%s\n", s);
 	}
 
 	if( !PAIDLF || (MYREC.opts & OP_PAID) )

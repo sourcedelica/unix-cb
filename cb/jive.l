@@ -15,6 +15,8 @@ EW [ 	.,;!?]
 #undef unputx
 #define unputx(x)	cbjun(x)
 
+void produce(char *s);
+
 %}
 
 %%
@@ -193,9 +195,23 @@ int c;
 	*(--cbjs) = c;
 }
 
-produce( s )
+void produce( s )
 char *s;
 {
 	if( (strlen(cbjt) + strlen(s)) < cbjl )
 		strcat( cbjt, s );
 }
+
+void do_jive(char *in, char *out, int maxlen)
+{
+    cbjl = maxlen;
+    cbjs = in;
+    cbjt = out;
+    *cbjt = 0;
+
+    yy_scan_string(in);
+    yylex();
+
+    *(cbjt+maxlen) = 0;
+}
+
