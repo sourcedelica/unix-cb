@@ -20,6 +20,10 @@ I put the code up on GitHub for sentimental reasons. I would have put up all of 
 ## Contributors
 - Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.
 
+## To Do
+- Remove hardcoded `DEFBASE`.  Replace using relative path(s) and `configure` or similar.
+- Get dorky chat working.  Have CB put tty device name in each slot instead of getting it from Skynet.
+
 ## Installation
 Make sure you have the flex library installed.  For example, `yum install flex`.
 
