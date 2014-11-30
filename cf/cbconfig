@@ -1,5 +1,5 @@
 URESSIZ=1
-CBINIT=/harmony/code/unix-cb/cb/cbinit
+CBINIT=/home/eric/cb/cbinit
 UNIXWHO=/usr/bin/who
 HOMEREC
 CBHELP=cbhelp

@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include <ctype.h>
-#include <termio.h>
+#include <string.h>
+#include "../include/osdefs.h"
 
 int readdef3( pr, x, lx, def )
 char *pr;
@@ -10,7 +12,7 @@ char *def;
 	int i, max;
 	char c;
 	static char echoe[] = { "\b_\b" }, bl = { '_' };
-	struct termio oldterm;
+	TERMIO_OR_TERMIOS oldterm;
 
 	saveterm(&oldterm);
 	if( oldterm.c_lflag & (ICANON|ECHO) )

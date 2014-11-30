@@ -1,6 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 
 /*
  *	rdctl(filename)-
@@ -54,7 +54,6 @@ char *fname;
 char **wrctl(p, fname)
 char **p, *fname;
 {
-	char	line[256];
 	FILE	*fp;
 	int	i;
 
@@ -153,4 +152,5 @@ char	**p, *line;
 			return( p );
 		}
 	}
+    return NULL;
 }

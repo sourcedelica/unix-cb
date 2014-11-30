@@ -1,4 +1,3 @@
-#include <malloc.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -17,8 +16,6 @@ char *t;
 	/*
 	 *	Case insensitive string compare
 	 */
-	int i;
-
 	for( ; (*s != 0) && (*t != 0); s++, t++ ){
 		if( toupper(*s) > toupper(*t) ) return(1);
 		else if( toupper(*s) < toupper(*t)  ) return(-1);
@@ -111,6 +108,7 @@ char *what;
 }
 #endif
 
+#if 0
 char *strlwr( s1 )
 char *s1;
 {
@@ -131,7 +129,6 @@ char *s1;
 		*s1 = toupper( *s1 );
 }
 
-#if 0
 char *strstr( s1, s2 )
 char *s1, *s2;
 {
@@ -216,7 +213,7 @@ char *str, *fat;
 	return( sav );
 }
 
-strcatc( s, c )
+void strcatc( s, c )
 char *s;
 char c;
 {

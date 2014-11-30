@@ -9,7 +9,7 @@
 
 #define STATIC		/* Define blank to have complete name space for adb */
 
-#define DEFBASE		"/harmony/code/unix-cb"
+#define DEFBASE		"/home/eric"
 #define CBVERS		"1.0"
 #define FORMAX		80	/* Max length of format string */
 #define CBSERV		1L	/* n > 0 mtype for server requests */
@@ -30,7 +30,6 @@
 #define GINVALS		"\007"	/* Invalid anywhere in handle */
 #define CBMODE		0660	/* Mode for ipcs and log */
 #define CBUMASK		077	/* umask setting for fopens */
-#define L_cuserid	16
 
 /* Server request/response types */
 

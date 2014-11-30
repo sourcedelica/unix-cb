@@ -15,7 +15,7 @@ int slot;
 	 *	Must have previously called m_at().
 	 */
 
-	int i, j;
+	int i;
 	char s[L_alias], msg[80];
 
 	if( readdefault("Page user: ",s,L_alias,"") == 0 )

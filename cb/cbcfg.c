@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../include/config.h"
+#include "../include/osdefs.h"
 #include "../include/xstring.h"
 #include "cb.h"
 #include "cbetc.h"
@@ -114,8 +116,6 @@ char *cmdbads[CMDTYPES];
 
 struct cmdnode *cmdlist = CNNULL;
 char **rdctl();
-
-extern char *malloc();
 
 /*********************************************************************/
 

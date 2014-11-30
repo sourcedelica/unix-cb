@@ -5,7 +5,9 @@
 /*	Skynet external file transfer protocol handling
 */
 
-extern char *prodefault();
+static char *prodefault();
+extern char *m_skynetpath();
+void prolist(char *);
 
 /**********************************************************************/
 
@@ -24,7 +26,7 @@ struct probuf *pbuf;
 		protocol
 	*/
 
-	char c, s[128];
+	char c;
 	int go;
 
 	putchar('\n');
@@ -57,7 +59,7 @@ struct probuf *pbuf;
 
 /*********************************************************************/
 
-prolist( fn )
+void prolist( fn )
 char *fn;
 {
 	/*	List protcols in PROTONAME file
@@ -188,7 +190,7 @@ struct probuf *pbuf;
 }
 
 
-/*static*/ char *prodefault()
+static char *prodefault()
 {
 	/*	Handles requests for the default protocol file
 

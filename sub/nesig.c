@@ -1,7 +1,7 @@
-#include <termio.h>
+#include "../include/osdefs.h"
 #include <signal.h>
 
-static struct termio temp;
+static TERMIO_OR_TERMIOS temp;
 static void (*oldi)();
 static void (*oldq)();
 
