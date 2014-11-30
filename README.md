@@ -13,7 +13,26 @@ A number of chat systems based on the CB user interface were developed in the 90
 
 Unix-CB uses System V IPC for communication, shared memory and synchonization.
 
-It is currently not compiling.  It last compiled in the early 90s but things have changed since then.
-I'm sure there is a backwards-compatibility compile flag that will get it working.  Pull requests welcome! :) 
+I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...   Thanks to Gary we were able to get CB compiling again.   
 
-I put the code up on GitHub for sentimental reasons. I would have all of the code for Skynet but unfortunately it appears to be lost forever...
+## Installation
+Make sure you have the flex library installed.  For example, `yum install flex`.
+
+### Compiling
+
+    cd sub
+    make
+    cd ../cb
+    # edit cb.h, set DEFBASE to the root of this project
+    make
+
+### Running the first time
+
+    cb/cbinit
+    
+### To run CB
+
+    export PAID=T
+    cb/cb
+
+Enjoy!

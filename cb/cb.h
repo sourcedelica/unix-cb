@@ -9,7 +9,7 @@
 
 #define STATIC		/* Define blank to have complete name space for adb */
 
-#define DEFBASE		"/home/eric"
+#define DEFBASE		"/media/psf/Home/Desktop/SKYNET"
 #define CBVERS		"1.0"
 #define FORMAX		80	/* Max length of format string */
 #define CBSERV		1L	/* n > 0 mtype for server requests */
