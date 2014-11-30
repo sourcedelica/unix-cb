@@ -15,7 +15,7 @@ LIB = /u/skynet/lib
 SYSVER= BSD
 
 #CFLAGS= -Zi
-CFLAGS= -g -Wtraditional
+CFLAGS= -g -Wall -Wno-implicit-int -Wno-implicit-function-declaration -I. -DHAVE_TERMIOS
 
 sub.a: $(SUBOBJ)
 	$(CC) $(CFLAGS) -c -DUNIX -D$(SYSVER) $(?:.o=.c)

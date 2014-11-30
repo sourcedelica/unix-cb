@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include <sys/utsname.h>
+#include <unistd.h>
 #include "../include/alias.h"
 #include "../include/muserinf.h"
 #define CMUSERINF
@@ -16,11 +18,18 @@
  */
 
 extern char *getenv(), *maliasof(), *cuserid();
-#define L_cuserid 16
 char guserid[L_cuserid];
 char galias[L_alias];
-char gnode[L_cuserid];
+char gnode[256];
 
+#ifdef __APPLE__
+char *cuserid(char *s)
+{
+    strcpy(s, getlogin());
+    return s;
+}
+#endif
+             
 /***********************************************************************/
 
 void muserinf()

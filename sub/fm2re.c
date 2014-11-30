@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 /*	File mask -to- Regular expression
 
 	For use in creating regcmp(3X)able vectors
@@ -12,7 +14,9 @@
 	must be matched.  gm2re() does not.
 */
 
-fm2re( mask, dest )
+void gm2re(char *mask, char *dest);
+
+void fm2re( mask, dest )
 char *mask;
 char *dest;
 {
@@ -20,10 +24,9 @@ char *dest;
 
 	gm2re( mask, buf );
 	sprintf( dest, "^%s$", buf );
-	return;
 }
 	
-gm2re( mask, dest )
+void gm2re( mask, dest )
 char *mask;
 char *dest;
 {

@@ -1,18 +1,24 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <ctype.h>
 #include <string.h>
 #include <setjmp.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include <termio.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
+#include <unistd.h>
 #include "../include/exitcodes.h"
 #include "../include/mflags.h"
 #include "../include/mstf.h"
 #include "../include/muserinf.h"
+#include "../include/osdefs.h"
+#include "../include/alias.h"
 #define CCB
 #include "cb.h"
 #include "cbetc.h"
@@ -34,7 +40,19 @@ extern void exclean();
 extern void infinish();
 extern void logout();
 extern void logclean();
-extern void loadops();
+static void loadops(int slot);
+static int stty0();
+STATIC int rdquota();
+STATIC void wrquota();
+STATIC int login( int where );
+int listsig(char *t);
+int Pu(int sid);
+int Vu(int sid);
+void raw();
+int readdefault( char *pr, char *x, int lx, char *def );
+void fixdorks();
+STATIC int rdrec( struct ulrec *ptemp );
+int stricmp(char *s1, char *s2);
 
 int slot = -1;
 int mid;
@@ -53,7 +71,7 @@ int child = 0;
 int ipcflag = IPC_NOWAIT;
 int sendflag = 0;
 int fixsid;
-struct termio oldterm;
+TERMIO_OR_TERMIOS oldterm;
 int skynet = 0;
 char *cbdoing;
 char *cbjs, *cbjt;
@@ -72,7 +90,7 @@ static int opto[] = {
 	OP_CHLOCK, OP_SQLOCK, OP_LFLOCK, OP_PMLOCK, OP_SQBEEP, OP_SQLF,
 	OP_MONIT, OP_ANSI, OP_SQSTAT, OP_PABEEP, OP_UGLYLINK, 0 };
 
-extern char *malloc(), *getenv(), *shmat(), *m_doing();
+extern char *m_doing();
 
 /***********************************************************************/
 
@@ -262,7 +280,7 @@ char **argv;
 	alist();
 	msglog(slot,CB_ACTIVATE);
 
-	if( child= fork() ){
+	if ((child = fork()) != 0) {
 		MYREC.cpid = child;
 		cbout();
 	} else
@@ -402,7 +420,7 @@ struct ulrec *ptemp;
 	int i, nodice;
 
 	if( HOMEREC ){
-		strcpy(s,homeof(guserid));
+        strcpy(s, homeof(guserid));
 		strcat(s,PATHSEP);
 		strcat(s,RECNAME);
 	} else
@@ -523,7 +541,7 @@ int slot;
 }	
 
 
-STATIC wrquota()
+STATIC void wrquota()
 {
 	/*	Write quota file from qremain if needed
 	*/
@@ -606,14 +624,14 @@ int slot;
 		return;
 	for( i= 0; i < ulsize; i++ ){
 		if( ulog[i].lastp == slot )
-			ulog[i].lastp == S_NOBODY;
+			ulog[i].lastp = S_NOBODY;
 		dosq( i, slot, SQ_SRESET|SQ_KRESET );
 	}
 	for( i= 0; i < ulsize+S_NUMGLOB; i++ )
 		dosq( slot, i, SQ_SRESET|SQ_KRESET );
 }
 
-/*static*/ void loadops( slot )
+static void loadops( slot )
 int slot;
 {
 	/*	Loads the "opts" flag word with the correct
@@ -654,25 +672,27 @@ int slot;
 			MYREC.opts |= OP_COSYSOP;
 }
 
-/*static*/ stty0()
+static int stty0()
 {
 	/*	Forces a hangup by setting the terminal's baud rate to
 		zero.  Implemented as a kludge to workaround
 		a flaky serial driver that refused to honor HUPCL.
 	
 		Use only if running CB standalone (as login shell, etc)
-		VIP users are not effected
+		VIP users are not affected
 	*/
 
 	if( MYREC.opts & OP_VIP )
 		return( 0 );
+    #ifdef CBAUD
 	oldterm.c_cflag &= ~CBAUD;
+    #endif
 	restterm(&oldterm);
 	/* Most likely never makes it to here */
 	return( 0 );
 }
 
-fixdorks()
+void fixdorks()
 {
 	int i;
 

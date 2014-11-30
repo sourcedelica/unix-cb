@@ -1,19 +1,25 @@
-#include <termio.h>
+#include <stdio.h>
+#include <string.h>
+#include "../include/osdefs.h"
 
-static struct termio oldterm;
+static TERMIO_OR_TERMIOS oldterm;
 int ocnorest= 0;
 
+static int waffirm(char *prompt, int isd, int dval);
+
 int affirm( prompt )
+char *prompt;
 {
 	return( waffirm(prompt, 0, 0) );
 }
 
 int affirmd( prompt, dval )
+char *prompt;
 {
 	return( waffirm(prompt, 1, dval) );
 }
 
-/*static*/ int waffirm( prompt, isd, dval )
+static int waffirm( prompt, isd, dval )
 char *prompt;
 int isd, dval;
 {

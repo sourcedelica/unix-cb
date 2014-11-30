@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <termio.h>
 #include <ctype.h>
 #include <string.h>
 #include "../include/envar.h"
@@ -8,6 +7,7 @@
 #include "../include/getmsg.h"
 #include <setjmp.h>
 #include <signal.h>
+#include "../include/osdefs.h"
 
 /*
  *	Skynet Mailbox System
@@ -40,10 +40,20 @@
 
 static int gabort();
 static int gadd();
-
-
+static void gereplace(int line, char **msg, int maxllen);
+static int gcmd();
+static void glist( char **msg );
+static void ecatch( int blah );
+static char *gctr( char *s, int maxllen );
+static int gedit( int *pline, char **msg, int maxlines, int maxllen );
+static void getitle( int maxllen );
+static int genew( int *pline, char **msg, int maxlines );
+static void geinsert( int *pline, char **msg, int maxlines, int maxllen );
+static void gedelete( int *pline, char **msg );
+static int gnum( char *pr, int high, int low, char **msg );
+     
 static char **msg;
-static struct termio oldterm;
+static TERMIO_OR_TERMIOS oldterm;
 static int myslot = -1;
 static int altmod = 0, alton = 0;
 
@@ -247,15 +257,12 @@ int maxllen;
 
 /***/
 
-/*static*/ int gcmd( pline, s, msg, cmd, maxlines, maxllen )
+static int gcmd( pline, s, msg, cmd, maxlines, maxllen )
 int *pline;
 char *s;
 char **msg;
 char cmd;
 {
-        void glist();
-        char *gctr();
-
         switch( toupper(cmd) ){
 
                 case 'E':       
@@ -340,7 +347,7 @@ int noval;
 
 /***/
 
-/*static*/ void glist( msg )
+static void glist( msg )
 char **msg;
 {
         char x;
@@ -386,7 +393,7 @@ char **msg;
 }
 
 #ifdef UNIX
-/*static*/ void ecatch( blah )
+static void ecatch( blah )
 int blah;
 {
         putchar('\n');
@@ -396,7 +403,7 @@ int blah;
 
 /***/
 
-/*static*/ char *gctr( s, maxllen )
+static char *gctr( s, maxllen )
 char *s;
 int maxllen;
 {
@@ -416,7 +423,7 @@ int maxllen;
         return( s );
 }
         
-/*static*/ int gedit( pline, msg, maxlines, maxllen )
+static int gedit( pline, msg, maxlines, maxllen )
 int *pline;
 char **msg;
 int maxlines;
@@ -424,7 +431,6 @@ int maxllen;
 {
         int go;
         char x;
-        void glist(), getitle(), geinsert(), gedelete();
         static char *gecmds = { "?SAQCRLDITN$%" };
 
 	printf("- %d lines - \n",*pline);
@@ -514,7 +520,7 @@ int maxllen;
 
 /***/
 
-/*static*/ void getitle( maxllen )
+static void getitle( maxllen )
 int maxllen;
 {
         char *x;
@@ -539,7 +545,7 @@ int maxllen;
  
 /***/
 
-/*static*/ int genew( pline, msg, maxlines )
+static int genew( pline, msg, maxlines )
 int *pline;
 char **msg;
 int maxlines;
@@ -564,7 +570,7 @@ int maxlines;
 
 /***/
 
-/*static*/ void geinsert( pline, msg, maxlines, maxllen )
+static void geinsert( pline, msg, maxlines, maxllen )
 int *pline;
 char **msg;
 int maxlines;
@@ -593,7 +599,7 @@ int maxllen;
         
 /***/
 
-/*static*/ void gedelete( pline, msg )
+static void gedelete( pline, msg )
 int *pline;
 char **msg;
 {
@@ -620,7 +626,7 @@ char **msg;
                 
 /***/
 
-/*static*/ gereplace( line, msg, maxllen )
+static void gereplace( line, msg, maxllen )
 int line;
 char **msg;
 int maxllen;
@@ -642,7 +648,7 @@ int maxllen;
 
 /***/
         
-/*static*/ int gnum( pr, high, low, msg )
+static int gnum( pr, high, low, msg )
 char *pr;
 int high;
 int low;

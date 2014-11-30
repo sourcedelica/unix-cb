@@ -39,3 +39,4 @@ struct cmdnode {
 #define CI_VIP		4
 
 extern char *cbfn(), *cfgxstr(), *cbrfn(), *cbqfn(), *basepath();
+extern int cbcfg();

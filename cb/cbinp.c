@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <ctype.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include <setjmp.h>
-#include <termio.h>
+#include <unistd.h>
+#include <sys/msg.h>
+#include "../include/osdefs.h"
 #include "../include/exitcodes.h"
 #include "../include/xstring.h"
 #include "cb.h"
@@ -47,6 +49,30 @@ extern void tlist();
 extern void vuser();
 extern void pguser();
 extern void dummy();
+extern int listsig(char *);
+extern void sane();
+extern void raw();
+extern void sndfix();
+extern void logpa(char *);
+extern int rdonly();
+extern void unnesig();
+extern int affirm(char *prompt);
+STATIC int chchan( int chan );
+void ungag();
+STATIC void talist();
+STATIC int cmdxlat();
+STATIC helper();
+int readdefault(char *pr, char *x, int lx, char *def);
+int Pu(int sid);
+int Vu(int sid);
+int gmatch( int gslot, int glob );
+STATIC int inp();
+STATIC int ckp2me();
+STATIC int oplist( int mopt, int all, int *xi, int *xp, char **xa );
+int checksq(int source, int target);
+STATIC int sqlist( int slot );
+int setnesig();
+
 
 #define P_PRIV		0
 #define P_AGAIN		1
@@ -100,7 +126,7 @@ static jmp_buf env;
 #ifdef SKYNET
 extern char *m_uname(), *m_alias();
 #endif
-extern struct termio oldterm;
+extern TERMIO_OR_TERMIOS oldterm;
 
 /**********************************************************************/
 
@@ -732,6 +758,7 @@ STATIC void cchan()
 
 
 int who( pr, s, t )
+char *pr, *s, *t;
 {
 	/*
 	 *	Prompt for user and lookup
@@ -858,7 +885,6 @@ STATIC void browse()
 	struct dmsg dm;		
 	struct cbmsg mbuf;
 	char s[80];
-	long lseek();
 	int bcatch();
 
 	last = *pnext + 1;
@@ -1566,7 +1592,7 @@ int add;
 }
 #endif
 
-STATIC talist()
+STATIC void talist()
 {
 	int i, j, k;
 	char s[80];
@@ -1643,7 +1669,7 @@ STATIC int ckp2me()
 }
 
 
-ungag()
+void ungag()
 {
 	/*	Set read-only override for a user
 	*/

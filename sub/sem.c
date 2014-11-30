@@ -2,6 +2,8 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
+static int semcall( int sid, int op, int flag );
+
 /*
  *	Semaphore operations
  *
@@ -67,7 +69,7 @@ int sid;
 }
 
 
-/*static*/ int semcall( sid, op, flag )
+static int semcall( sid, op, flag )
 int sid;
 int op;
 int flag;

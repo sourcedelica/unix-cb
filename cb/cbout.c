@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 #include <signal.h>
@@ -6,9 +8,11 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <errno.h>
+#include "../include/osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"
+#include "../include/xstring.h"
 
 /*
  *	Unix-CB
@@ -26,6 +30,8 @@ extern void addit();
 extern void printem();
 extern void printit();
 extern char *xlat();
+extern void sndfix();
+extern char *ansstr( int aslot );
 
 static int work = 0;
 static int busyin = 0;
@@ -44,7 +50,6 @@ struct dlist {
 static struct dlist *first = DLNULL;
 static struct dlist *last = DLNULL;
 
-extern char *malloc();
 extern char *strtok2();
 
 /**********************************************************************/
@@ -127,7 +132,6 @@ struct dmsg *pdm;
 	 */
 
 	struct dlist *temp;
-	char *malloc();
 
 	temp = (struct dlist *)malloc(sizeof(struct dlist));
 	memcpy(&(temp->d),pdm,sizeof(struct dmsg));

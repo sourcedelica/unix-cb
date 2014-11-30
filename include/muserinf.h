@@ -21,3 +21,10 @@ extern char guserid[];
 extern char galias[];
 extern char gnode[];
 #endif
+
+#ifndef L_cuserid
+#define L_cuserid 256
+#endif
+
+
+

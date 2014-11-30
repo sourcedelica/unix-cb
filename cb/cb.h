@@ -30,7 +30,6 @@
 #define GINVALS		"\007"	/* Invalid anywhere in handle */
 #define CBMODE		0660	/* Mode for ipcs and log */
 #define CBUMASK		077	/* umask setting for fopens */
-#define L_cuserid	16
 
 /* Server request/response types */
 

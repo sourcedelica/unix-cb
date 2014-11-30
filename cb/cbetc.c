@@ -1,12 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <ctype.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/ipc.h>
+#include <sys/msg.h>
 #include <errno.h>
+#include <unistd.h>
+#include <time.h>
 #include "../include/exitcodes.h"
 #include "../include/envar.h"
+#include "../include/xstring.h"
+#include "../include/osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"
@@ -27,8 +34,16 @@ extern void distrib();
 extern char *aline();
 extern void sndfix();
 extern char *getenv();
+extern int Pu(int sid);
+extern int Vu(int sid);
+extern int gmatch( int gslot, int glob );
+
+int checksq(int source, int target);
 
 extern char *ctime();
+
+char *ansstr( int aslot );
+STATIC int nextpos();
 
 /**********************************************************************/
 
@@ -63,7 +78,7 @@ char *toal;
 			puts("Yes");
 		else {
 			puts("No");
-			return;
+			return(1);
 		}
 	}
 	strcpy(dm.to,toal);
@@ -98,14 +113,11 @@ char *s;
 	char xj[MSGLEN+40];
 
 	if( MYREC.opts & OP_JIVE ){
-		cbjl = MSGLEN;
-		cbjs = s;
-		cbjt = xj;
-		*cbjt = 0;
-		while( yylex() != 0 )
-			;
-		*(cbjt+MSGLEN) = 0;
-		strcpy( s, cbjt );
+        void do_jive(char *in, char *out, int maxlen);
+        printf("s=%s\n", s);
+        do_jive(s, xj, MSGLEN);
+		strcpy(s, xj);
+        printf("s=%s\n", s);
 	}
 
 	if( !PAIDLF || (MYREC.opts & OP_PAID) )
@@ -309,19 +321,19 @@ int stype;
 	if( stype & SQ_SRESET ){
 		sq->sqtype &= ~SQ_STYPE;
 		if( DEBUG > 0 && !logging )
-			printf("dosq: sreset sq=0x%x sqtype=0%o\n",sq,sq->sqtype);
+			printf("dosq: sreset sq=0x%lx sqtype=0%o\n",(unsigned long)sq,sq->sqtype);
 	}
 	if( stype & SQ_KRESET ){
 		sq->sqtype &= ~SQ_KILL;
 		if( DEBUG > 0 && !logging )
-			printf("dosq: kreset sq=0x%x sqtype=0%o\n",sq,sq->sqtype);
+			printf("dosq: kreset sq=0x%lx sqtype=0%o\n",(unsigned long)sq,sq->sqtype);
 	}
 	if( !(stype & (SQ_SRESET|SQ_KRESET)) ){
 		if( stype == SQ_KILL )
 			sq->sqtype |= stype;
 		else {
 			if( DEBUG > 0 ){
-				printf("dosq: sq=0x%x sqtype=0%o stype=0%o\n",sq,sq->sqtype,stype);
+				printf("dosq: sq=0x%lx sqtype=0%o stype=0%o\n",(unsigned long)sq,sq->sqtype,stype);
 			}
 			sq->sqtype = stype;
 		}
@@ -732,7 +744,7 @@ int rdonly()
 		(!(MYREC.opts & OP_VALID) && (*pcbflag & CF_VRDONLY)) );
 }
 
-logpa( s )
+void logpa( s )
 {
 	/*	Log 's' to the CB log file for posterity
 	*/

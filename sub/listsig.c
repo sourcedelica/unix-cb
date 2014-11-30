@@ -5,6 +5,8 @@
 static jmp_buf env;
 static int done;
 
+static void catch(int blah);
+
 int listsig( t )
 char *t;
 {
@@ -17,7 +19,6 @@ char *t;
 	 *
 	 */
 
-	void catch();
 	FILE *f;
 	char s[255];
 
@@ -33,9 +34,10 @@ char *t;
 	}
 	unnesig();
 	fclose(f);
+    return 0;
 }
 
-/*static*/ void catch( blah )
+static void catch( blah )
 int blah;
 {
 	done = blah;

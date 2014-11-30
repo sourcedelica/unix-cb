@@ -9,13 +9,13 @@
  */
 
 #include <stdio.h>
-#include <termio.h>
+#include "../include/osdefs.h"
 #include "getkey.h"
 
 int getkey(status)
 int	status;
 {
-	struct	termio	oldterm;
+	TERMIO_OR_TERMIOS	oldterm;
 	int	ch;
 
 	saveterm(&oldterm);

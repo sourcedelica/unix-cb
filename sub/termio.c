@@ -1,5 +1,5 @@
-#include <termio.h>
 #include <stdio.h>
+#include "../include/osdefs.h"
 
 /*
 **  curses-ish termio routines
@@ -16,23 +16,23 @@
 **	- single key, no echo, signals on user defined chars 
 */
 
-static struct termio rawsave;
+static TERMIO_OR_TERMIOS rawsave;
 
 void saveterm( save )
-struct termio *save;
+TERMIO_OR_TERMIOS *save;
 {
-	ioctl( 0, TCGETA, save );
+    tcgetattr(0, save);
 }
 
 void restterm( save )
-struct termio *save;
+TERMIO_OR_TERMIOS *save;
 {
-	ioctl( 0, TCSETAW, save );
+    tcsetattr(0, 0, save);
 }
 
 void sane()
 {
-	struct termio temp;
+	TERMIO_OR_TERMIOS temp;
 	char *x, *getenv();
 
 	saveterm( &temp );
@@ -53,12 +53,12 @@ void sane()
 		}
 	}
 	temp.c_cc[VEOF] = CEOF;
-	ioctl( 0, TCSETAW, &temp );
+    tcsetattr(0, 0, &temp);
 }
 
 void raw()
 {
-	struct termio temp;
+	TERMIO_OR_TERMIOS temp;
 
 	saveterm( &temp );
 	saveterm( &rawsave );
@@ -66,7 +66,7 @@ void raw()
 	temp.c_iflag &= ~( IGNCR | ICRNL );
 	temp.c_cc[VMIN] = 1;
 	temp.c_cc[VTIME] = 0;
-	ioctl( 0 , TCSETAW, &temp );
+    tcsetattr(0, 0, &temp);
 }
 
 void unraw()
@@ -79,7 +79,7 @@ void sigraw( cintr, cquit )
 char cintr;
 char cquit;
 {
-	struct termio temp;
+	TERMIO_OR_TERMIOS temp;
 
 	saveterm( &temp );
 	temp.c_lflag &= ~( ICANON | ECHO | ECHOE | ECHOK );
@@ -88,7 +88,7 @@ char cquit;
 	temp.c_cc[VQUIT] = cquit;
 	temp.c_cc[VMIN] = 1;
 	temp.c_cc[VTIME] = 0;
-	ioctl( 0 , TCSETAW, &temp );
+    tcsetattr(0, 0, &temp);
 }
 
 #ifdef TESTING

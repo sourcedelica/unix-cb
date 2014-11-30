@@ -14,8 +14,15 @@ BIN = ../bin
 SKYUSER= eric
 SUB= ../sub/sub.a
 
-CFLAGS=
+CFLAGS= -g -Wno-dangling-else -Wno-implicit-int -DHAVE_TERMIOS -DANSI
 EXES= cbinit CB cbtest
+
+OS := $(shell uname)
+ifeq ($(OS),Darwin)
+LIBS=-ll
+else
+LIBS=-lfl
+endif
 
 #
 #	Dependencies
@@ -43,7 +50,7 @@ cbinit:	$(IOBJ)
 	$(CC) $(CFLAGS) $(IOBJ) -o $@ $(SUB)
 
 CB: $(CBOBJ)
-	$(CC) $(CFLAGS) $(CBOBJ) -lfl -o $@ $(SUB)
+	$(CC) $(CFLAGS) $(CBOBJ) $(LIBS) -o $@ $(SUB)
 
 cbtest: $(CBOBJ)
 	$(CC) $(CFLAGS) $(CBOBJ) -o $@ -ll $(SUB)

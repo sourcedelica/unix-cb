@@ -13,3 +13,6 @@
 	extern char *strstr();
 	extern char *strdup();
 #endif
+
+int isdigstr(char *s);
+char *strsqz( char *str, char *fat );
