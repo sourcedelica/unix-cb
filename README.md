@@ -13,7 +13,7 @@ A number of chat systems based on the CB user interface were developed in the 90
 
 Unix-CB uses System V IPC for communication, shared memory and synchonization.  It splits into two processes, one for 
 input and one for output (there were no threads back in those days).  While input is happening it raises a semaphore to 
-block the output.
+block the output.  It also uses the semaphore to synchronize updates to shared memory.
 
 I put the code up on GitHub for sentimental reasons. I would have put up all of the code for Skynet but unfortunately it appears to be lost forever...   
 
