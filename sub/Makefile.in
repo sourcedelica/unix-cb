@@ -169,6 +169,7 @@ AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
@@ -176,8 +177,10 @@ DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
+EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FLEX = @FLEX@
+GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -250,7 +253,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libsub.a
 libsub_a_SOURCES = termio.c readdef.c nesig.c getmsg.c alias.c xstring.c freemsg.c cdate.c listsig.c sem.c getkey.c getctl.c muserinf.c memdump.c readdef2.c datetime.c fm2re.c readdef3.c affirm.c pguser.c protos.c m_bogus.c
-AM_CFLAGS = -Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DHAVE_TERMIOS -DANSI
+AM_CFLAGS = -Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DANSI
 all: all-am
 
 .SUFFIXES:
