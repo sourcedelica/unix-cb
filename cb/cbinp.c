@@ -61,7 +61,7 @@ STATIC int chchan( int chan );
 void ungag();
 STATIC void talist();
 STATIC int cmdxlat();
-STATIC helper();
+STATIC void helper();
 int readdefault(char *pr, char *x, int lx, char *def);
 int Pu(int sid);
 int Vu(int sid);
@@ -912,7 +912,7 @@ STATIC void browse()
 	} else {
 		printf("------\n");
 		setnesig(' ',033, bcatch );
-		for( j= i; j != last ;j = ++j % cursize){
+		for( j= i; j != last ;j = (j+1) % cursize){
 				lseek(out,(long)(j*sizeof(struct dmsg)),0);
 				read(out,&dm,sizeof(dm));
 				if( (MYREC.opts & OP_SQPILF) &&
@@ -1624,7 +1624,7 @@ STATIC void talist()
 
 #define COP	(cmdops[temp->index])
 
-STATIC helper()
+STATIC void helper()
 {
 	/*	Print a description of pertinent commands
 	*/

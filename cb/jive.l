@@ -15,6 +15,7 @@ EW [ 	.,;!?]
 #undef unputx
 #define unputx(x)	cbjun(x)
 
+void cbjun(int c);
 void produce(char *s);
 
 %}
@@ -188,10 +189,9 @@ cbjin()
 	return( *(cbjs++) );
 }
 
-cbjun(c)
+void cbjun(c)
 int c;
 {
-	
 	*(--cbjs) = c;
 }
 
