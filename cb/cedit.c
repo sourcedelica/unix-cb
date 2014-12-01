@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "../include/getctl.h"
 #include "../include/xstring.h"
 
@@ -68,7 +71,7 @@ char **argv;
 		if( explain == NULL ){ err++; break; }
 		prompt = strtok2(NULL, "\n");
 		if( prompt == NULL ){ err++; break; }
-		if( res= getchg() )
+		if( (res = getchg()) != 0 )
 			break;
 	}
 	fclose( f );

@@ -114,10 +114,8 @@ char *s;
 
 	if( MYREC.opts & OP_JIVE ){
         void do_jive(char *in, char *out, int maxlen);
-        printf("s=%s\n", s);
         do_jive(s, xj, MSGLEN);
 		strcpy(s, xj);
-        printf("s=%s\n", s);
 	}
 
 	if( !PAIDLF || (MYREC.opts & OP_PAID) )
@@ -745,6 +743,7 @@ int rdonly()
 }
 
 void logpa( s )
+char *s;
 {
 	/*	Log 's' to the CB log file for posterity
 	*/
