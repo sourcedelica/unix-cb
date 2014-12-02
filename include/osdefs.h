@@ -1,10 +1,10 @@
-#ifdef HAVE_TERMIOS
+#if HAVE_TERMIOS_H
 
 #include <termios.h>
 
 #define TERMIO_OR_TERMIOS struct termios
 
-#else
+#elif HAVE_TERMIO_H
 
 #include <termio.h>
 
@@ -12,6 +12,14 @@
 
 #define tcgetattr(fd, save) ioctl(fd, TCGETA, save)
 #define tcsetattr(fd, optional_actions, save) ioctl(fd, TCSETAW, save)
+
+#else
+
+struct termio_dummy {};
+#define TERMIO_OR_TERMIOS struct termio_dummy
+
+#define tcgetattr(fd, save)
+#define tcsetattr(fd, optional_actions, save)
 
 #endif
 

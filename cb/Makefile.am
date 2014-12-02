@@ -8,4 +8,4 @@ cedit_SOURCES = cedit.c
 
 LDADD = ../sub/libsub.a @LEXLIB@
 
-AM_CFLAGS=-Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DHAVE_TERMIOS -DANSI
+AM_CFLAGS=-Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DANSI
