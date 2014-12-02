@@ -1,5 +1,4 @@
-unix-cb
-=======
+# unix-cb [![Build Status](https://travis-ci.org/sourcedelica/unix-cb.svg?branch=master)](https://travis-ci.org/sourcedelica/unix-cb)
 
 Unix-CB, a chat system from the olden days
 
