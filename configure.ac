@@ -1,5 +1,5 @@
 AC_INIT([CB], 1.0, [Eric Pederson (@sourcedelica)])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_CHECK_PROG([FLEX], [flex lex], [flex])
