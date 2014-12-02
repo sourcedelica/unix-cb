@@ -31,8 +31,17 @@
 # Backup files
 *~
 
-# Automake stuff
+# Autotools stuff
 autom4te.cache
 .deps
 config.log
 config.status
+Makefile
+Makefile.in
+aclocal.m4
+compile
+configure
+depcomp
+install-sh
+missing
+ylwrap

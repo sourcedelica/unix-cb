@@ -1,0 +1,9 @@
+# https://travis-ci.org/sourcedelica/unix-cb
+language: c
+compiler:
+  - clang
+  - gcc
+before_script:
+  - ./autogen.sh
+script:
+  - ./configure && make
