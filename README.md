@@ -21,7 +21,6 @@ I put the code up on GitHub for sentimental reasons. I would have put up all of 
 ## To Do
 - Get it ready to run on sourcedelica.com.
     - Currently CB assumes users are logged in.  Ideally it should work without being logged in (just using telnet protcol).  Though in the short term I may just add users on the sourcedelica box with a shell of CB.
-- Get dorky chat working.  Have CB put tty device name in each slot instead of getting it from Skynet. 
 
 ## Installation
 Make sure you have the flex library installed.  For example, `yum install flex`. You will also need autoconf and automake.

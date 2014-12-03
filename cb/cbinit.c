@@ -8,8 +8,8 @@
 #include <sys/msg.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
-#include "../include/exitcodes.h"
-#include "../include/osdefs.h"
+#include "exitcodes.h"
+#include "osdefs.h"
 #define CCB
 #include "cb.h"
 #include "cbcfg.h"

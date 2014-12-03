@@ -2,8 +2,8 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "../include/alias.h"
-#include "../include/muserinf.h"
+#include "alias.h"
+#include "muserinf.h"
 #define CMUSERINF
 
 /*

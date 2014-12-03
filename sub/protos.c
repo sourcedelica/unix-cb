@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "../include/protos.h"
+#include "protos.h"
 
 /*	Skynet external file transfer protocol handling
 */

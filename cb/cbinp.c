@@ -6,9 +6,9 @@
 #include <setjmp.h>
 #include <unistd.h>
 #include <sys/msg.h>
-#include "../include/osdefs.h"
-#include "../include/exitcodes.h"
-#include "../include/xstring.h"
+#include "osdefs.h"
+#include "exitcodes.h"
+#include "xstring.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"
@@ -350,7 +350,6 @@ char c;
 #endif
 			putchar('\n');
 			break;
-#ifdef SKYNET
 		case 'R':
 			if( ckp2me() ){
 				printf("Somebody is sending you a private message right now\n");
@@ -360,6 +359,7 @@ char c;
 			dorky();
 			alist();
 			break;
+#ifdef SKYNET
 		case 'T':
 			tlist(slot);
 			break;

@@ -13,6 +13,7 @@
 #define FORMAX		80	/* Max length of format string */
 #define CBSERV		1L	/* n > 0 mtype for server requests */
 #define L_cbalias	21	/* Max length of handle, plus 1 */
+#define L_ttyname   21  /* Max length of TTY name, plus 1 */
 #define ANSPA		"\033[40;1;37m"
 #define ANSREG		"\033[40;2;37m"
 #define PATHSEP		"/"
@@ -106,6 +107,7 @@ struct sqrec {
 struct ulrec {
 	char userid[L_cuserid];
 	char handle[L_cbalias];
+	char ttyname[L_ttyname];
 	int chan;
 	int opts;
 	struct sqrec *sqs;

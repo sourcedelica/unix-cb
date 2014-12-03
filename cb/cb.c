@@ -13,12 +13,13 @@
 #include <sys/sem.h>
 #include <sys/shm.h>
 #include <unistd.h>
-#include "../include/exitcodes.h"
-#include "../include/mflags.h"
-#include "../include/mstf.h"
-#include "../include/muserinf.h"
-#include "../include/osdefs.h"
-#include "../include/alias.h"
+#include "exitcodes.h"
+#include "mflags.h"
+#include "mstf.h"
+#include "muserinf.h"
+#include "osdefs.h"
+#include "alias.h"
+#include "sds.h"
 #define CCB
 #include "cb.h"
 #include "cbetc.h"
@@ -405,6 +406,15 @@ int where;
 #define R_LASTP		"LASTP"
 #define R_LASTRP	"LASTRP"
 
+sds get_user_record_path(char *userid)
+{
+    if (HOMEREC) {
+        return sdscat(sdscat(sdsnew(homeof(userid)), PATHSEP), RECNAME);
+    } else {
+        return sdsnew(cbrfn(userid));
+    }
+}
+
 STATIC int rdrec( ptemp )
 struct ulrec *ptemp;
 {
@@ -418,17 +428,12 @@ struct ulrec *ptemp;
 	FILE *f;
 	char s[80], *x;
 	int i, nodice;
-
-	if( HOMEREC ){
-        strcpy(s, homeof(guserid));
-		strcat(s,PATHSEP);
-		strcat(s,RECNAME);
-	} else
-		strcpy(s, cbrfn( guserid ));
+	sds user_record_path = get_user_record_path(guserid);
 	
 	nodice = 0;
-	if( (f= fopen(s,"r")) == NULL )
+	if( (f= fopen(user_record_path, "r")) == NULL )
 		nodice++;
+	sdsfree(user_record_path);
 
 	ptemp->sqs = SQNULL;
 	ptemp->kvotes = 0;
@@ -445,6 +450,9 @@ struct ulrec *ptemp;
 	ptemp->dcreq = -1;
 	ptemp->towho = S_NOBODY;
 	ptemp->qremain = rdquota();
+
+    strncpy(ptemp->ttyname, ttyname(0), L_ttyname-1);
+    ptemp->ttyname[L_ttyname-1] = '\0';
 
 	if( nodice )
 		return( 0 );
@@ -509,18 +517,15 @@ int slot;
 	FILE *f;
 	char s[80];
 	int i, um;
+	sds user_record_path;
 
 	if( slot < 0 || slot >= ulsize )
 		return;
-	if( HOMEREC ){
-		strcpy(s,homeof(ulog[slot].userid));
-		strcat(s,PATHSEP);
-		strcat(s,RECNAME);
-	} else
-		strcpy(s, cbrfn( ulog[slot].userid ));
-	
+	user_record_path = get_user_record_path(ulog[slot].userid);	
 	um = umask( CBUMASK );
-	if( (f= fopen(s,"w+")) == NULL ){
+	f = fopen(user_record_path, "w+");
+	sdsfree(user_record_path);
+	if (f == NULL) {
 		umask( um );
 		return;
 	}

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 
 static TERMIO_OR_TERMIOS oldterm;
 int ocnorest= 0;

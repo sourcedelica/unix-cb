@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/getctl.h"
-#include "../include/xstring.h"
+#include "getctl.h"
+#include "xstring.h"
 
 /*	Skynet miscellaneous utilites
 

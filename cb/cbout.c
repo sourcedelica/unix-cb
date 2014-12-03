@@ -8,11 +8,11 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <errno.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"
-#include "../include/xstring.h"
+#include "xstring.h"
 
 /*
  *	Unix-CB

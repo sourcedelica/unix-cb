@@ -9,7 +9,7 @@
  */
 
 #include <stdio.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 #include "getkey.h"
 
 int getkey(status)

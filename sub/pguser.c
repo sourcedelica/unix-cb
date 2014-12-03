@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../include/alias.h"
-#include "../include/muserinf.h"
+#include "alias.h"
+#include "muserinf.h"
 
 extern char *m_uname(), *m_alias();
 

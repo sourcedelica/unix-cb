@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 
 /*
 **  curses-ish termio routines
