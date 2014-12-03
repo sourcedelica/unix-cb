@@ -4,6 +4,7 @@
 #include <string.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <errno.h>
 #include "osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
@@ -29,7 +30,6 @@ void dorky()
 	char s[256], *tty, fn[80];
 	int i, j, idc, oum;
 	long tdum;
-	extern int errno;
 
 	if( (i= who("Who: ",s,NULL)) == S_NOBODY )
 		return;
