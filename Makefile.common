@@ -1,1 +1,1 @@
-AM_CFLAGS=-I$(top_srcdir)/include -Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DANSI -DDEFBASE=\"@abs_top_builddir@\"
+AM_CFLAGS=-I$(top_srcdir)/include -DANSI -DDEFBASE=\"@abs_top_builddir@\"
