@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 
 int readdefault( pr, x, lx, def )
 char *pr;

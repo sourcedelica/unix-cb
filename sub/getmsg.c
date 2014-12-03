@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "../include/envar.h"
+#include "envar.h"
 #define CGETMSG
-#include "../include/getmsg.h"
+#include "getmsg.h"
 #include <setjmp.h>
 #include <signal.h>
-#include "../include/osdefs.h"
+#include "osdefs.h"
 
 /*
  *	Skynet Mailbox System

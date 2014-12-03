@@ -10,10 +10,10 @@
 #include <errno.h>
 #include <unistd.h>
 #include <time.h>
-#include "../include/exitcodes.h"
-#include "../include/envar.h"
-#include "../include/xstring.h"
-#include "../include/osdefs.h"
+#include "exitcodes.h"
+#include "envar.h"
+#include "xstring.h"
+#include "osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"

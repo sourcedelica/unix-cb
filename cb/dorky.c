@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
 #include <signal.h>
 #include <fcntl.h>
+#include "osdefs.h"
 #include "cb.h"
 #include "cbetc.h"
 #include "cbcfg.h"
@@ -37,15 +41,21 @@ void dorky()
 		printf( "You may not private chat with yourself\n" );
 		return;
 	}
+	#ifdef SKYNET
 	if( !(ulog[i].opts & OP_SKYNET) ){
 		printf("%s not on Skynet\n",s);
 		return;
 	}
+	#endif
 	if( checksq( i, slot ) & SQ_BOTH ){
 		printf("Squelched by %s\n",s);
 		return;
 	}
+	#ifdef SKYNET
 	tty = m_device( i );
+	#else
+	tty = ulog[i].ttyname;
+	#endif
 	if( (f= fopen( tty, "a" )) == NULL ){
 		printf("Cannot private chat with %s\n",s);
 		return;

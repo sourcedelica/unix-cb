@@ -1,11 +1,11 @@
+include $(top_srcdir)/Makefile.common
+
 bin_PROGRAMS = cbinit CB cedit
 
-CB_SOURCES = cb.c cbout.c cbinp.c cbetc.c cbcfg.c jive.l
+CB_SOURCES = cb.c cbout.c cbinp.c cbetc.c cbcfg.c jive.l dorky.c
 
 cbinit_SOURCES = cbinit.c cbcfg.c
 
 cedit_SOURCES = cedit.c
 
 LDADD = ../sub/libsub.a @LEXLIB@
-
-AM_CFLAGS=-Wno-implicit-int -Wno-implicit-function-declaration -Wno-dangling-else -DANSI -DDEFBASE=\"@abs_top_builddir@\"

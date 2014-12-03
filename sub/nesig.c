@@ -1,4 +1,4 @@
-#include "../include/osdefs.h"
+#include "osdefs.h"
 #include <signal.h>
 
 static TERMIO_OR_TERMIOS temp;

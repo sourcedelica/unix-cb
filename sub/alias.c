@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <pwd.h>
-#include "../include/osdefs.h"
-#include "../include/alias.h"
+#include "osdefs.h"
+#include "alias.h"
 
 /*
  *	Skynet

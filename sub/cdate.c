@@ -2,7 +2,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
-#include "../include/cdate.h"
+#include "cdate.h"
 
 /*
  *	Skynet
