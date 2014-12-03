@@ -5,16 +5,16 @@
 void freemsg( msg )
 char **msg;
 {
-	/*
-	 *	Skynet
-	 *
-	 *	Free up dynamic memory used by a message
-	 *
-	 */
+    /*
+     *  Skynet
+     *
+     *  Free up dynamic memory used by a message
+     *
+     */
 
-	char **temp;
+    char **temp;
 
-	for( temp = msg; *temp != NULL; temp++ )
-		free( *temp );
-	free( msg );
+    for( temp = msg; *temp != NULL; temp++ )
+        free( *temp );
+    free( msg );
 }

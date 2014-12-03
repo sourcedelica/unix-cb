@@ -10,16 +10,16 @@ char cintr;
 char cquit;
 void (*catch)();
 {
-	saveterm( &temp );
-	oldi = (void(*)())signal(SIGINT,catch);
-	oldq = (void(*)())signal(SIGQUIT,catch); 
-	sigraw( cintr, cquit );
-	return(0);
+    saveterm( &temp );
+    oldi = (void(*)())signal(SIGINT,catch);
+    oldq = (void(*)())signal(SIGQUIT,catch);
+    sigraw( cintr, cquit );
+    return(0);
 }
 
 void unnesig()
 {
-	restterm( &temp );
-	signal(SIGINT,oldi);
-	signal(SIGQUIT,oldq);
+    restterm( &temp );
+    signal(SIGINT,oldi);
+    signal(SIGQUIT,oldq);
 }

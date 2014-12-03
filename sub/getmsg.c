@@ -10,20 +10,20 @@
 #include "osdefs.h"
 
 /*
- *	Skynet Mailbox System
+ *  Skynet Mailbox System
  *
- *	Line Editor
+ *  Line Editor
  *
- *	Copyright (C) 1987 CPEX Development
- *	All Rights Reserved.
- *	Author: Eric Pederson
+ *  Copyright (C) 1987 CPEX Development
+ *  All Rights Reserved.
+ *  Author: Eric Pederson
  *
  */
 
 #define WARN    5               /* Lines left to warning */
 #define WRAPMAX 20              /* Max wrap characters */
 #define WRBREAK 3               /* Breaking point for wrap before EOL */
-#define TABLEN	5		/* Number of spaces in a tab */
+#define TABLEN  5       /* Number of spaces in a tab */
 #define CPPNULL (char **)0
 
 #define G_CONT  -1
@@ -51,7 +51,7 @@ static int genew( int *pline, char **msg, int maxlines );
 static void geinsert( int *pline, char **msg, int maxlines, int maxllen );
 static void gedelete( int *pline, char **msg );
 static int gnum( char *pr, int high, int low, char **msg );
-     
+
 static char **msg;
 static TERMIO_OR_TERMIOS oldterm;
 static int myslot = -1;
@@ -73,11 +73,11 @@ int maxllen;
         int go, act, line = 0;
         char *s, *w;
 
-	m_at();	/* Secondary calls to m_at are ignored */
-	if( (s= getenv( SE_SLOT )) != NULL )
-		myslot = atoi(s);
-	s = malloc(maxllen+1);
-	w = malloc(maxllen+1);
+    m_at(); /* Secondary calls to m_at are ignored */
+    if( (s= getenv( SE_SLOT )) != NULL )
+        myslot = atoi(s);
+    s = malloc(maxllen+1);
+    w = malloc(maxllen+1);
         msg = (char **)calloc(maxlines+1,sizeof(char *));
         printf("Enter up to %d lines. ",maxlines);
         if( maxllen < 80 )
@@ -88,8 +88,8 @@ int maxllen;
         puts("!");
 
         memset(s,0,maxllen+1);
-	saveterm(&oldterm);
-	raw();
+    saveterm(&oldterm);
+    raw();
 
         for( go= G_CONT; go == G_CONT; ){
 
@@ -112,13 +112,13 @@ int maxllen;
                                 } else
                                         printf("-Top-\n");
                                 break;
-                
+
                         case ACT_OK:
                         case ACT_WRAP:
                                 line = gadd( line, s, msg, maxlines, maxllen );
                                 if( (line != maxlines) && (act == ACT_WRAP) )
                                         strcpy(s,w);
-                                break;                  
+                                break;
 
                         case ACT_CMD:
                                 go = gcmd( &line, s, msg, s[1], maxlines, maxllen );
@@ -135,7 +135,7 @@ int maxllen;
                 msg = CPPNULL;
         }
 
-	restterm(&oldterm);
+    restterm(&oldterm);
         return( msg );
 }
 
@@ -151,15 +151,15 @@ char *w;
 
         int spos, pos, i;
 
-	spos = 0;
-	pos = strlen(s);
+    spos = 0;
+    pos = strlen(s);
         memset(w,0,maxllen+1);
         printf("%s",s);
 
         for(;;){
                 switch( (x= getchar()) ){
 
-			case 0177:
+            case 0177:
                         case '\b':
                                 if( pos == 0 )
                                         return( ACT_BS );
@@ -167,51 +167,51 @@ char *w;
                                 printf("%s",echoes);
                                 break;
 
-			case '\r':
+            case '\r':
                         /*case '\n':*/
                                 s[pos] = 0;
                                 putchar('\n');
                                 return( *s == '/' || *s == '.' ? ACT_CMD : ACT_OK );
 
-			case 022:
-			case 030:
-				if( pos == 0 )
-					return(ACT_BS);
-				while( pos > 0 ){
-					printf("\b \b");
-					if( s[--pos] == ' ' && x == 022 ){
-						s[pos] = 0;
-						break;
-					} else
-						s[pos] = 0;
-				}
-				break;
-		
-                        case 033:       
+            case 022:
+            case 030:
+                if( pos == 0 )
+                    return(ACT_BS);
+                while( pos > 0 ){
+                    printf("\b \b");
+                    if( s[--pos] == ' ' && x == 022 ){
+                        s[pos] = 0;
+                        break;
+                    } else
+                        s[pos] = 0;
+                }
+                break;
+
+                        case 033:
                                 pos = 0;
                                 s[pos] = 0;
                                 putchar('\n');
                                 break;
 
-			case '\t':
-				for( i=0; pos != (maxllen-WRBREAK) && i != TABLEN; i++ ){
-					spos = pos;
-					s[pos] = ' ';
-					s[++pos] = 0;
-					putchar(' ');
-				}
-					break;
-			case 001:
-				altmod = !altmod;
-				break;
-                        case ' ':       
+            case '\t':
+                for( i=0; pos != (maxllen-WRBREAK) && i != TABLEN; i++ ){
+                    spos = pos;
+                    s[pos] = ' ';
+                    s[++pos] = 0;
+                    putchar(' ');
+                }
+                    break;
+            case 001:
+                altmod = !altmod;
+                break;
+                        case ' ':
                                 spos = pos;
-				/* FALLS THROUGH */
+                /* FALLS THROUGH */
                         default:
-				if( iscntrl(x) )
-					break;
-				if( altmod && (alton= !alton))
-					x = toupper(x);
+                if( iscntrl(x) )
+                    break;
+                if( altmod && (alton= !alton))
+                    x = toupper(x);
                                 if( pos != (maxllen-WRBREAK) ){
                                         s[pos] = x;
                                         s[++pos] = 0;
@@ -246,12 +246,12 @@ int maxllen;
         msg[line] = malloc(maxllen+1);
         strcpy(msg[line],s);
         line++;
-        
+
         if( line == (maxlines-WARN) )
                 printf("%d lines left\n",WARN);
         memset(s,0,maxllen+1);
         msg[line] = NULL;
-        
+
         return( line );
 }
 
@@ -265,25 +265,25 @@ char cmd;
 {
         switch( toupper(cmd) ){
 
-                case 'E':       
+                case 'E':
                         return( gedit( pline, msg, maxlines, maxllen ) );
 
                 case 'Q':
-                case 'A':       
+                case 'A':
                         return( gabort( G_CONT ) );
 
-                case 'S':       
+                case 'S':
                         if( *pline == 0 ){
                                 puts("No lines");
                                 return( G_CONT );
                         } else
                                 return( G_OK );
 
-                case 'L':       
+                case 'L':
                         glist( msg );
                         return( G_CONT );
 
-                case 'D':       
+                case 'D':
                         if( *pline == 0 )
                                 printf("-Top-\n");
                         else {
@@ -293,30 +293,30 @@ char cmd;
                         }
                         return( G_CONT );
 
-                case 'C':       
+                case 'C':
                         gctr( s, maxllen );
                         puts(s);
                         *pline = gadd( *pline, s, msg, maxlines, maxllen );
                         return( G_CONT );
 
 /*
-		case '%':
-			pguser( myslot );
-			return( G_CONT );
-			break;
+        case '%':
+            pguser( myslot );
+            return( G_CONT );
+            break;
 */
 
-		case '$':
-			m_who( myslot );
-			return( G_CONT );
-			break;
+        case '$':
+            m_who( myslot );
+            return( G_CONT );
+            break;
 
                 case '?':
                         printf("/ commands: S)ave, E)dit, Q)uit, L)ist,");
                         if( maxllen < 80 )
                                 printf("\n           ");
                         puts  (" A)bort, D)elete, C)enter Text");
-			puts  (" %)Page, $)Who");
+            puts  (" %)Page, $)Who");
                         return( G_CONT );
 
                 default:
@@ -331,11 +331,11 @@ char cmd;
 static int gabort( noval )
 int noval;
 {
-	int c;
+    int c;
 
         printf("Abort message? ");
-        
-	c = getchar();
+
+    c = getchar();
         if( toupper(c) == 'Y' ){
                 puts("Yes");
                 return( G_QUIT );
@@ -361,7 +361,7 @@ char **msg;
         }
         printf("Line numbers? ");
         x = getchar();
-	x = toupper(x);
+    x = toupper(x);
 
         if( x == 'Q' ){
                 puts("Quit");
@@ -422,7 +422,7 @@ int maxllen;
 
         return( s );
 }
-        
+
 static int gedit( pline, msg, maxlines, maxllen )
 int *pline;
 char **msg;
@@ -433,26 +433,26 @@ int maxllen;
         char x;
         static char *gecmds = { "?SAQCRLDITN$%" };
 
-	printf("- %d lines - \n",*pline);
+    printf("- %d lines - \n",*pline);
         for( go= G_EDIT; go == G_EDIT; ){
                 printf("\nEdit> ");
 
-		x = getchar();
+        x = getchar();
                 while( strchr(gecmds,x= toupper(x)) == NULL )
                         x = getchar();
 
                 switch( x ){
 
-                        case '?':       
+                        case '?':
                                 puts("Help");
                                 printf("S)ave, C)ontinue, Q)uit, L)ist, I)nsert, ");
                                 if( maxllen < 80 )
                                         putchar('\n');
                                 puts("D)elete, R)eplace, T)itle, N)ew");
-				puts("$)Who, %)Page");
+                puts("$)Who, %)Page");
                                 break;
 
-                        case 'S':       
+                        case 'S':
                                 puts("Save");
                                 if( *pline == 0 )
                                         puts("No lines");
@@ -466,50 +466,50 @@ int maxllen;
                                 go= gabort( G_EDIT );
                                 break;
 
-                        case 'C':       
+                        case 'C':
                                 puts("Continue");
                                 if( (*pline > 0) && (*pline < maxlines) )
                                         puts(msg[(*pline)-1]);
                                 go = G_CONT;
                                 break;
 
-                        case 'L':       
+                        case 'L':
                                 puts("List");
                                 glist( msg );
                                 break;
 
-                        case 'R':       
+                        case 'R':
                                 puts("Replace");
                                 gereplace( *pline, msg, maxllen );
                                 break;
 
-                        case 'D':       
+                        case 'D':
                                 puts("Delete");
                                 gedelete( pline, msg );
                                 break;
 
-                        case 'I':       
+                        case 'I':
                                 puts("Insert");
                                 geinsert( pline, msg, maxlines, maxllen );
                                 break;
 
-                        case 'T':       
+                        case 'T':
                                 puts("Title");
                                 getitle( maxllen );
                                 break;
 
-                        case 'N':       
+                        case 'N':
                                 puts("New");
                                 go = genew( pline, msg, maxlines );
                                 break;
-			case '%':
-				puts("Page");
-				pguser( myslot );
-				break;
-			case '$':
-				puts("Who");
-				m_who( myslot );
-				break;
+            case '%':
+                puts("Page");
+                pguser( myslot );
+                break;
+            case '$':
+                puts("Who");
+                m_who( myslot );
+                break;
                         default:
                                 puts("Not installed");
                                 break;
@@ -542,7 +542,7 @@ int maxllen;
         free(x);
         return;
 }
- 
+
 /***/
 
 static int genew( pline, msg, maxlines )
@@ -550,11 +550,11 @@ int *pline;
 char **msg;
 int maxlines;
 {
-	int c;
+    int c;
 
         printf("Sure? ");
 
-	c = getchar();
+    c = getchar();
         if( toupper(c) != 'Y' ){
                 puts("No");
                 return( G_EDIT );
@@ -596,7 +596,7 @@ int maxllen;
         (*pline)++;
         msg[*pline] = NULL;
 }
-        
+
 /***/
 
 static void gedelete( pline, msg )
@@ -623,7 +623,7 @@ char **msg;
         *pline -= k-j+1;
         msg[*pline] = NULL;
 }
-                
+
 /***/
 
 static void gereplace( line, msg, maxllen )
@@ -647,7 +647,7 @@ int maxllen;
 }
 
 /***/
-        
+
 static int gnum( pr, high, low, msg )
 char *pr;
 int high;

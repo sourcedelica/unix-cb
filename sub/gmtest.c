@@ -8,13 +8,13 @@ char **argv;
 {
         char **msg;
         char tit[80];
-	int len;
+    int len;
 
         if( argc == 1 ){
                 printf("usage: getmsg maxlines [maxllen]\n");
                 exit(0);
         }
-	len = ( argc == 3 ? atoi(argv[2]) : 80 );
+    len = ( argc == 3 ? atoi(argv[2]) : 80 );
         strcpy(ptitle= tit,"Title man");
         titav = 1;
         raw();
@@ -22,9 +22,9 @@ char **argv;
         if( msg == (char **)0 )
                 puts("no message");
         else {
-		printf("%s ----------\n",tit);
+        printf("%s ----------\n",tit);
                 for(;*msg != NULL;msg++)
                         puts(*msg);
-	}
+    }
         sane();
 }
