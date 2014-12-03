@@ -4,6 +4,8 @@ compiler:
   - clang
   - gcc
 before_script:
+  - sudo pip install pexpect --use-mirrors
   - ./autogen.sh
 script:
-  - ./configure && make
+  - ./configure
+  - make && make check || (cat test-suite.log && false)
