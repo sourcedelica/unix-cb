@@ -10,38 +10,38 @@ static void catch(int blah);
 int listsig( t )
 char *t;
 {
-	/*
-	 *	List a file, interruptable by signals
-	 *	Returns a status:
-	 *	 0 - ok
-	 *	-1 - file was not found
-	 *	SIGQUIT, SIGINT - signal that aborted
-	 *
-	 */
+    /*
+     *  List a file, interruptable by signals
+     *  Returns a status:
+     *   0 - ok
+     *  -1 - file was not found
+     *  SIGQUIT, SIGINT - signal that aborted
+     *
+     */
 
-	FILE *f;
-	char s[255];
+    FILE *f;
+    char s[255];
 
-	done = 0;
-	if( (f= fopen(t,"r")) == NULL )
-		return(-1);
-	if( setjmp(env) ){
-		putchar('\n');
-	} else {
-		setnesig( ' ', 033, catch );
-		while( fgets(s,80,f) != NULL )
-			fputs(s,stdout);
-	}
-	unnesig();
-	fclose(f);
+    done = 0;
+    if( (f= fopen(t,"r")) == NULL )
+        return(-1);
+    if( setjmp(env) ){
+        putchar('\n');
+    } else {
+        setnesig( ' ', 033, catch );
+        while( fgets(s,80,f) != NULL )
+            fputs(s,stdout);
+    }
+    unnesig();
+    fclose(f);
     return 0;
 }
 
 static void catch( blah )
 int blah;
 {
-	done = blah;
-	signal(SIGINT,SIG_IGN);
-	signal(SIGQUIT,SIG_IGN);
-	longjmp(env,-1);
+    done = blah;
+    signal(SIGINT,SIG_IGN);
+    signal(SIGQUIT,SIG_IGN);
+    longjmp(env,-1);
 }

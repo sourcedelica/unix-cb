@@ -1,10 +1,10 @@
 /*
- *	Getkey.c
+ *  Getkey.c
  *
- *		this routine will allow a user to have slick one-key operations
- *		under unix.
+ *      this routine will allow a user to have slick one-key operations
+ *      under unix.
  *
- *	copyright (c) 1988 Alan Premselaar
+ *  copyright (c) 1988 Alan Premselaar
  *
  */
 
@@ -13,66 +13,66 @@
 #include "getkey.h"
 
 int getkey(status)
-int	status;
+int status;
 {
-	TERMIO_OR_TERMIOS	oldterm;
-	int	ch;
+    TERMIO_OR_TERMIOS   oldterm;
+    int ch;
 
-	saveterm(&oldterm);
+    saveterm(&oldterm);
 
-	if ( oldterm.c_lflag & (ICANON|ECHO) )
-		raw();
+    if ( oldterm.c_lflag & (ICANON|ECHO) )
+        raw();
 
-	if ( (status & (ECHOCH|YESNO)) > ECHOCH )
-		status = status & ~ECHOCH;
-							/* if ECHO and YESNO, then turn ECHO off */
+    if ( (status & (ECHOCH|YESNO)) > ECHOCH )
+        status = status & ~ECHOCH;
+                            /* if ECHO and YESNO, then turn ECHO off */
 
-	ch = getchar();
+    ch = getchar();
 
-	if ((status & ECHOCH) && (ch != '\n'))
-		printf("%c",ch);
+    if ((status & ECHOCH) && (ch != '\n'))
+        printf("%c",ch);
 
-	if (status & YESNO)
-		switch(ch) {
-			case 'y':
-			case 'Y':
-					printf("Yes");
-					break;
-			default:
-					printf("No");
-					break;
-		}
+    if (status & YESNO)
+        switch(ch) {
+            case 'y':
+            case 'Y':
+                    printf("Yes");
+                    break;
+            default:
+                    printf("No");
+                    break;
+        }
 
-	if (status & NEWLINE)
-		printf("\n");
+    if (status & NEWLINE)
+        printf("\n");
 
-	if (status & NUMBER)
-		ch -= 48;
+    if (status & NUMBER)
+        ch -= 48;
 
-	if ( oldterm.c_lflag & (ICANON|ECHO) )
-		restterm(&oldterm);
+    if ( oldterm.c_lflag & (ICANON|ECHO) )
+        restterm(&oldterm);
 
-	return(ch);
+    return(ch);
 }
 
 #ifdef TESTING
 main()
 {
-	int	ch;
+    int ch;
 
-	printf("yes or no? ");
-	ch = getkey(YESNO);
-	printf("  newline: ");
-	ch = getkey(NEWLINE);
-	printf("  echo: ");
-	ch = getkey(ECHOCH);
-	printf("  echo & newline: ");
-	ch = getkey(ECHOCH|NEWLINE);
-	printf("  yesno & newline: ");
-	ch = getkey(YESNO|NEWLINE);
-	printf("all: ");
-	ch = getkey(YESNO|ECHOCH|NEWLINE);
-	printf("Number: ");
-	printf("%d  ",getkey(NUMBER));
+    printf("yes or no? ");
+    ch = getkey(YESNO);
+    printf("  newline: ");
+    ch = getkey(NEWLINE);
+    printf("  echo: ");
+    ch = getkey(ECHOCH);
+    printf("  echo & newline: ");
+    ch = getkey(ECHOCH|NEWLINE);
+    printf("  yesno & newline: ");
+    ch = getkey(YESNO|NEWLINE);
+    printf("all: ");
+    ch = getkey(YESNO|ECHOCH|NEWLINE);
+    printf("Number: ");
+    printf("%d  ",getkey(NUMBER));
 }
 #endif

@@ -5,11 +5,11 @@
 static int semcall( int sid, int op, int flag );
 
 /*
- *	Semaphore operations
+ *  Semaphore operations
  *
- *	Copyright (C) 1988 CPEX Development
- *	All Rights Reserved.
- *	Author: Eric Pederson
+ *  Copyright (C) 1988 CPEX Development
+ *  All Rights Reserved.
+ *  Author: Eric Pederson
  *
  */
 
@@ -18,54 +18,54 @@ static int semcall( int sid, int op, int flag );
 int P( sid )
 int sid;
 {
-	/*
-	 *	Perform P operation on semaphore 0 in set sid
-	 *
-	 *	Returns Sys V result of system call
-	 */
+    /*
+     *  Perform P operation on semaphore 0 in set sid
+     *
+     *  Returns Sys V result of system call
+     */
 
-	return( semcall( sid, -1, 0 ) );
+    return( semcall( sid, -1, 0 ) );
 }
 
 
 int Pu( sid )
 int sid;
 {
-	/*
-	 *	Perform P operation on semaphore 0 in set sid
-	 *	Perform operation with SEM_UNDO flag set
-	 *
-	 *	Returns Sys V result of system call
-	 */
+    /*
+     *  Perform P operation on semaphore 0 in set sid
+     *  Perform operation with SEM_UNDO flag set
+     *
+     *  Returns Sys V result of system call
+     */
 
-	return( semcall( sid, -1, SEM_UNDO ) );
+    return( semcall( sid, -1, SEM_UNDO ) );
 }
 
 
 int V( sid )
 int sid;
 {
-	/*
-	 *	Perform V operation on semaphore 0 in set sid
-	 *
-	 *	Returns Sys V result of system call
-	 */
+    /*
+     *  Perform V operation on semaphore 0 in set sid
+     *
+     *  Returns Sys V result of system call
+     */
 
-	return( semcall( sid, 1, 0 ) );
+    return( semcall( sid, 1, 0 ) );
 }
 
 
 int Vu( sid )
 int sid;
 {
-	/*
-	 *	Perform V operation on semaphore 0 in set sid
-	 *	Perform operation with SEM_UNDO flag set
-	 *
-	 *	Returns Sys V result of system call
-	 */
+    /*
+     *  Perform V operation on semaphore 0 in set sid
+     *  Perform operation with SEM_UNDO flag set
+     *
+     *  Returns Sys V result of system call
+     */
 
-	return( semcall( sid, 1, SEM_UNDO ) );
+    return( semcall( sid, 1, SEM_UNDO ) );
 }
 
 
@@ -74,18 +74,18 @@ int sid;
 int op;
 int flag;
 {
-	/*
-	 *	Perform a semaphore operation on semaphore 0 in set sid
-	 *
-	 *	Returns Sys V system call result
-	 *
-	 */
+    /*
+     *  Perform a semaphore operation on semaphore 0 in set sid
+     *
+     *  Returns Sys V system call result
+     *
+     */
 
-	struct sembuf buf;
+    struct sembuf buf;
 
-	buf.sem_num = 0;
-	buf.sem_op = op;
-	buf.sem_flg = flag;
+    buf.sem_num = 0;
+    buf.sem_op = op;
+    buf.sem_flg = flag;
 
-	return( semop( sid, &buf, 1 ) );
+    return( semop( sid, &buf, 1 ) );
 }

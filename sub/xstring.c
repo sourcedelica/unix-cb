@@ -3,9 +3,9 @@
 #include <ctype.h>
 
 /*
- *	Skynet
+ *  Skynet
  *
- *	More string functions
+ *  More string functions
  *
  */
 
@@ -13,26 +13,26 @@ int stricmp( s, t )
 char *s;
 char *t;
 {
-	/*
-	 *	Case insensitive string compare
-	 */
-	for( ; (*s != 0) && (*t != 0); s++, t++ ){
-		if( toupper(*s) > toupper(*t) ) return(1);
-		else if( toupper(*s) < toupper(*t)  ) return(-1);
-	}
-	if (*s == 0 && *t != 0)
-		return(-1);
-	else if (*s != 0 && *t == 0)
-		return(1);
-	else
-		return(0);
+    /*
+     *  Case insensitive string compare
+     */
+    for( ; (*s != 0) && (*t != 0); s++, t++ ){
+        if( toupper(*s) > toupper(*t) ) return(1);
+        else if( toupper(*s) < toupper(*t)  ) return(-1);
+    }
+    if (*s == 0 && *t != 0)
+        return(-1);
+    else if (*s != 0 && *t == 0)
+        return(1);
+    else
+        return(0);
 }
 
 
 /*
- *	Skynet
+ *  Skynet
  *
- *	More string functions
+ *  More string functions
  *
  */
 
@@ -41,69 +41,69 @@ char *s;
 char *t;
 int n;
 {
-	/*
-	 *	Case insensitive string compare, n bytes
-	 */
-	int i;
+    /*
+     *  Case insensitive string compare, n bytes
+     */
+    int i;
 
-	for(i=0 ; (*s != 0) && (*t != 0) && (i < n); s++, t++, i++ ){
-		if( toupper(*s) > toupper(*t) ) return(1);
-		else if( toupper(*s) < toupper(*t)  ) return(-1);
-	}
-	return(0);
+    for(i=0 ; (*s != 0) && (*t != 0) && (i < n); s++, t++, i++ ){
+        if( toupper(*s) > toupper(*t) ) return(1);
+        else if( toupper(*s) < toupper(*t)  ) return(-1);
+    }
+    return(0);
 }
 
 /*******************************************************************/
 
-char *bufptr2;		/* Defined globally so nested strtok2 calls
-				can be made */
+char *bufptr2;      /* Defined globally so nested strtok2 calls
+                can be made */
 
 char *strtok2(inptr,delims)
 char *inptr;
 char *delims;
 {
-	/*
-	 *	Returns zero-length strings between consecutive delimiters
-	 */
-	register char *cptr,*delimptr;
+    /*
+     *  Returns zero-length strings between consecutive delimiters
+     */
+    register char *cptr,*delimptr;
 
-	if(inptr != NULL)
-		bufptr2 = inptr;
-	
-	for(cptr = bufptr2;;)
-	{
-		if(cptr == bufptr2 && *bufptr2 == '\0')
-			return(NULL);
+    if(inptr != NULL)
+        bufptr2 = inptr;
 
-		for(delimptr = delims;*delimptr != '\0';delimptr++)
-		{
-			if(*delimptr == *bufptr2)
-			{
-				*bufptr2++ = '\0';
-				return(cptr);
-			}else if(*bufptr2 == '\0')
-				break;
-		}
+    for(cptr = bufptr2;;)
+    {
+        if(cptr == bufptr2 && *bufptr2 == '\0')
+            return(NULL);
 
-		if(*bufptr2 == '\0')
-			return(cptr);
-		else
-			bufptr2++;
+        for(delimptr = delims;*delimptr != '\0';delimptr++)
+        {
+            if(*delimptr == *bufptr2)
+            {
+                *bufptr2++ = '\0';
+                return(cptr);
+            }else if(*bufptr2 == '\0')
+                break;
+        }
 
-	}
+        if(*bufptr2 == '\0')
+            return(cptr);
+        else
+            bufptr2++;
+
+    }
 }
 
 #ifdef NO_STRDUP
 char *strdup( what )
 char *what;
 {
-	/*	Mimic ANSI C strdup() function
-	 */
+    /*  Mimic ANSI C strdup() function
+     */
 
-	char *x;
+    char *x;
 
-	x = malloc( strlen(what) + 1 );
-	return( x != NULL ? strcpy( x, what ) : NULL );
+    x = malloc( strlen(what) + 1 );
+    return( x != NULL ? strcpy( x, what ) : NULL );
 
 }
 #endif
@@ -112,118 +112,118 @@ char *what;
 char *strlwr( s1 )
 char *s1;
 {
-	/*	Convert string to lower case
-	 */
+    /*  Convert string to lower case
+     */
 
-	for( ; *s1; s1++ )
-		*s1 = tolower( *s1 );
+    for( ; *s1; s1++ )
+        *s1 = tolower( *s1 );
 }
 
 char *strupr( s1 )
 char *s1;
 {
-	/*	Convert string to upper case
-	 */
+    /*  Convert string to upper case
+     */
 
-	for( ; *s1; s1++ )
-		*s1 = toupper( *s1 );
+    for( ; *s1; s1++ )
+        *s1 = toupper( *s1 );
 }
 
 char *strstr( s1, s2 )
 char *s1, *s2;
 {
-	/*	Mimic ANSI C strstr()
-	 */
+    /*  Mimic ANSI C strstr()
+     */
 
-	for( ; *s1; s1++ )
-		if( !strncmp( s1, s2, strlen(s2) ) )
-			return( s1 );
-	return( NULL );
+    for( ; *s1; s1++ )
+        if( !strncmp( s1, s2, strlen(s2) ) )
+            return( s1 );
+    return( NULL );
 }
 #endif
 
 #ifdef TESTING
 main()
 {
-	char s[80], t[80], *strsqz();
+    char s[80], t[80], *strsqz();
 
-	for(;;){
-		puts("strsqz test");
-		printf("s: ");
-		gets(s);
-		printf("t: ");
-		gets(t);
-		printf("%s\n",strsqz(s,t));
-	}
+    for(;;){
+        puts("strsqz test");
+        printf("s: ");
+        gets(s);
+        printf("t: ");
+        gets(t);
+        printf("%s\n",strsqz(s,t));
+    }
 }
 #endif
 
 int isdigstr( s )
 char *s;
 {
-	/* Does an isdigit() for an entire string
-	 */
+    /* Does an isdigit() for an entire string
+     */
 
-	char *x;
+    char *x;
 
-	for( x= s; *x != 0; x++ )
-		if( !isdigit( *x ) )
-			return( 0 );
+    for( x= s; *x != 0; x++ )
+        if( !isdigit( *x ) )
+            return( 0 );
 
-	return( 1 );
+    return( 1 );
 }
 
 int strcrchr(s, c)
 char *s;
 char c;
 {
-	/* start at the end, return position of first character in s
-	 * not matching 'c'
-	 */
-	int	i;
+    /* start at the end, return position of first character in s
+     * not matching 'c'
+     */
+    int i;
 
-	for (i=strlen(s)-1; i>0 ;i--)
-		if (s[i] != c)
-			return( i );
-	return( 0 );
+    for (i=strlen(s)-1; i>0 ;i--)
+        if (s[i] != c)
+            return( i );
+    return( 0 );
 }
 
 char *strsqz( str, fat )
 char *str, *fat;
 {
-	/*	Squeezes multiple occurences of characters in 
-		in fat to one character.
+    /*  Squeezes multiple occurences of characters in
+        in fat to one character.
 
-		Note: This would mean strsqz("x112333y", "123") would
-		produce "x123y"
-	*/
-	
-	char *x, *sav, *trl;
+        Note: This would mean strsqz("x112333y", "123") would
+        produce "x123y"
+    */
 
-	sav= trl= str;
-	for( ; *str != 0; str++ ){
-		*trl = *str;
-		if( (x= strchr(fat, *str)) != NULL ){
-			for( ; *x == *(str+1); str++ )
-				;
-		}
-		trl++;
-	}
-	*trl = 0;
-	return( sav );
+    char *x, *sav, *trl;
+
+    sav= trl= str;
+    for( ; *str != 0; str++ ){
+        *trl = *str;
+        if( (x= strchr(fat, *str)) != NULL ){
+            for( ; *x == *(str+1); str++ )
+                ;
+        }
+        trl++;
+    }
+    *trl = 0;
+    return( sav );
 }
 
 void strcatc( s, c )
 char *s;
 char c;
 {
-	/*	Append character 'c'  and a null onto the end
-		of string 's'
-	*/
+    /*  Append character 'c'  and a null onto the end
+        of string 's'
+    */
 
-	while( *s )
-		s++;
-	*s = c;
-	s++;
-	*s = 0;
+    while( *s )
+        s++;
+    *s = c;
+    s++;
+    *s = 0;
 }

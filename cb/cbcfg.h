@@ -1,6 +1,6 @@
-/*	Unix CB
-	
-	Configuration functions definitions
+/*  Unix CB
+
+    Configuration functions definitions
 */
 
 #ifndef CCBCFG
@@ -23,20 +23,20 @@ extern struct cmdnode *cmdlist;
 #endif
 
 struct cmdnode {
-	char type;
-	char *acts;
-	char *desc;
-	int index;
-	struct cmdnode *next;
+    char type;
+    char *acts;
+    char *desc;
+    int index;
+    struct cmdnode *next;
 };
-#define CNNULL	(struct cmdnode *)NULL
+#define CNNULL  (struct cmdnode *)NULL
 
 /* Command array index locations */
-#define CI_REG		0
-#define CI_PAID		1
-#define CI_COSYSOP	2
-#define CI_SYSOP	3
-#define CI_VIP		4
+#define CI_REG      0
+#define CI_PAID     1
+#define CI_COSYSOP  2
+#define CI_SYSOP    3
+#define CI_VIP      4
 
 extern char *cbfn(), *cfgxstr(), *cbrfn(), *cbqfn(), *basepath();
 extern int cbcfg();

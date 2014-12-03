@@ -45,3 +45,5 @@ depcomp
 install-sh
 missing
 ylwrap
+test-driver
+
