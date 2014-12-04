@@ -37,7 +37,7 @@ var CB_PORT = process.env.CB_PORT || 8888;
 
 var USE_REDIS = (process.env.USE_REDIS == 'T');
 
-var telnet = require('./telnet.js');
+var telnet = require('wez-telnet');
 var moment = require('moment');
 var bcrypt = require('bcrypt');
 
@@ -54,12 +54,6 @@ if (USE_REDIS) {
 function rtrim(s) {
   return s.toString().replace(/\s+$/,'');
 }
-
-// Telnet stuff
-var WILL        = 251; // I will use option
-var WONT        = 252; // I won't use option
-var TELOPT_ECHO = 1;   // echo
-var TELOPT_SGA  = 3;   // suppress go ahead
 
 // Dumb in-memory user database.
 var USERS = USE_REDIS ? null : {};
@@ -80,12 +74,12 @@ function clearOnline(user) {
 
 function echoOff(client)
 {
-  client.telnetCommand(WILL, TELOPT_ECHO);
+  client.telnetCommand(telnet.WILL, telnet.OPT_ECHO);
 }
 
 function echoOn(client)
 {
-  client.telnetCommand(WONT, TELOPT_ECHO);
+  client.telnetCommand(telnet.WONT, telnet.OPT_ECHO);
 }
 
 function redisUserKey(username) {
@@ -168,6 +162,11 @@ function createNewUser(client, data) {
 }
 
 function newClient(client) {
+  client.on('do', function (opt) {
+    if (opt != telnet.OPT_ECHO && opt != telnet.OPT_SUPPRESS_GO_AHEAD) {
+      client.telnetCommand(telnet.WONT, opt);
+    }
+  });
   client.write('Welcome to MoHo (Nostlgia Edition)\r\n\r\n');
   client.write('Enter "new" if you are a new user.\r\n')
   login(client, 3);
@@ -223,8 +222,8 @@ function enterCB(client, user) {
     cwd: process.env.HOME,
     env: {PAID:'T', LOGNAME:user.username}
   });
-  client.telnetCommand(WILL, TELOPT_SGA);
-  client.telnetCommand(WILL, TELOPT_ECHO);
+  client.telnetCommand(telnet.WILL, telnet.OPT_SUPPRESS_GO_AHEAD);
+  client.telnetCommand(telnet.WILL, telnet.OPT_ECHO);
   term.on('data', function(data) {
     client.write(data);
   });
