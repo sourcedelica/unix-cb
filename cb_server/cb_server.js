@@ -4,21 +4,52 @@
 //  telnet server for Skynet Unix-CB
 //  Gary Grossman 12/3/2014
 //
-//  To use:
-//    npm install pty
+//  To use on MacOS:
+//    # Install Xcode command line tools
+//    sudo xcode-select --install
+//
+//    # Install node.js and redis with Homebrew
+//    brew install node
+//    brew install redis
+//    # Follow instructions displayed for launching Redis.
+//
+//    cd cb_server
+//    npm install
+//    export USE_REDIS=T
 //    node cb_server.js
 //    telnet localhost 8888
 //
+// Redis is required for the user database to not be lost on shutdown.
+// If USE_REDIS=T, Redis is used; otherwise, user records are stored in memory.
+//
+// pty.js is required for dorkychat. It has to be installed directly from Github
+// due to a compile header conflict in the currently released npm version.
+//
+// Unix-CB must be configured with HOMEREC=0 in this configuration, as each
+// user will not have their own real Unix account.
+//
 //  TODO:
-//  - Right now, user records are stored in-memory and lost on shutdown
-//  - Should be more configurable: read TCP port from ENV, etc.
 //  - Jumps right into CB after login. Could use a Lobby :)
 //
 
 var CB_PATH = require('path').resolve('../cb/CB');
-var CB_PORT = 8888;
+var CB_PORT = process.env.CB_PORT || 8888;
+
+var USE_REDIS = (process.env.USE_REDIS == 'T');
 
 var telnet = require('./telnet.js');
+var moment = require('moment');
+var bcrypt = require('bcrypt');
+
+var redis = null, redisClient = null;
+if (USE_REDIS) {
+  redis = require("redis");
+  redisClient = redis.createClient(
+    process.env.REDIS_PORT || 6379,
+    process.env.REDIS_HOST || '127.0.0.1',
+    {}
+  );
+}
 
 function rtrim(s) {
   return s.toString().replace(/\s+$/,'');
@@ -31,7 +62,21 @@ var TELOPT_ECHO = 1;   // echo
 var TELOPT_SGA  = 3;   // suppress go ahead
 
 // Dumb in-memory user database.
-var USERS = {};
+var USERS = USE_REDIS ? null : {};
+
+var ONLINE_USERS = {};
+
+function isOnline(user) {
+  return ONLINE_USERS[user.username] || false;
+}
+
+function setOnline(user) {
+  ONLINE_USERS[user.username] = true;
+}
+
+function clearOnline(user) {
+  ONLINE_USERS[user.username] = false;
+}
 
 function echoOff(client)
 {
@@ -43,23 +88,72 @@ function echoOn(client)
   client.telnetCommand(WONT, TELOPT_ECHO);
 }
 
+function redisUserKey(username) {
+  return "SkynetUser:"+username;
+}
+
+function getUser(username, callback) {
+  if (USE_REDIS) {
+    redisClient.hgetall(redisUserKey(username), callback);
+  } else {
+    callback(null, USERS[username]);
+  }
+}
+
+function createUser(username, password, callback) {
+  var user = {
+    username: username,
+    password: bcrypt.hashSync(password, 10),
+    createdAt: moment.utc().format(),
+  };
+  if (USE_REDIS) {
+    redisClient.hmset(redisUserKey(username), user, function (err) {
+      callback(err, err != null ? null : user);
+    });
+  } else {
+    USERS[username] = user;
+    callback(null, user);
+  }
+}
+
+function fatal(err) {
+  client.write('An error occurred: ' + err.toString());
+  client.write('Please try again later.');
+  client.end();
+}
+
 function createNewUser(client, data) {
   var username = rtrim(data);
-  if (USERS[username]) {
-    client.write('Sorry, that username is already taken.\r\n\r\n');
-    client.write('Enter the username you would like to use: ');      
-    client.once('data', function (data) { createNewUser(client, data); });
-  } else {
-    client.write('Enter a password: ');
-    echoOff(client);
-    client.once('data', function (data) {
-      client.write('\r\n');
-      var password = rtrim(data);
-      var user = {username:username, password:password, online:false};
-      USERS[username] = user;
-      enterCB(client, user);
-    });
-  }
+  getUser(username, function (err, obj) {
+    if (err != null) {
+      fatal(err);
+    } else if (obj != null) {
+      client.write('Sorry, that username is already taken.\r\n\r\n');
+      client.write('Enter the username you would like to use: ');
+      client.once('data', function (data) { createNewUser(client, data); });
+    } else {
+      client.write('Enter a password: ');
+      echoOff(client);
+      function gotPassword(data) {
+        client.write('\r\n');
+        var password = rtrim(data);
+        if (data.length < 5) {
+          client.write('Password must be at least 5 characters.\r\n\r\n');
+          client.write('Enter a password: ');
+          client.once('data', gotPassword);
+        } else {
+          createUser(username, password, function (err, user) {
+            if (err != null) {
+              fatal(err);
+            } else {
+              enterCB(client, user);
+            }
+          });
+        }
+      }
+      client.once('data', gotPassword);
+    }
+  });
 }
 
 function newClient(client) {
@@ -82,32 +176,35 @@ function login(client, retriesLeft) {
       client.once('data', function (data) {
         client.write('\r\n');
         var password = rtrim(data);
-        var user = USERS[username];
-        if (user == null || user.password != password) {
-          client.write('Login incorrect.\r\n\r\n');
-          if (retriesLeft == 0) {
-            client.end();
+        getUser(username, function (err, user) {
+          if (err != null) {
+            fatal(err);
+          } else if (user == null || !bcrypt.compareSync(password, user.password)) {
+            client.write('Login incorrect.\r\n\r\n');
+            if (retriesLeft == 0) {
+              client.end();
+            } else {
+              echoOn(client);
+              login(client, retriesLeft-1);
+            }
           } else {
-            echoOn(client);
-            login(client, retriesLeft-1);
+            enterCB(client, user);
           }
-        } else {
-          enterCB(client, user);
-        }
+        });
       });
     }
   });
 }
 
 function enterCB(client, user) {
-  if (user.online) {
+  if (isOnline(user)) {
     client.write('You are already logged in.\r\n');
     client.write('People who talk to themselves never learn anything of value.\r\n');
     client.end();
     return;
   }
-  user.online = true;
-  var pty = require('pty');
+  setOnline(user);
+  var pty = require('pty.js');
   var term = pty.spawn(CB_PATH, [], {
     name: 'xterm-color',
     cols: 80,
@@ -122,14 +219,14 @@ function enterCB(client, user) {
   });
   term.on('close', function() {
     client.end();
-    user.online = false;
+    clearOnline(user);
   });
   client.on('data', function (data) {
     term.write(data);
   });
   client.on('close', function () {
     term.end();
-    user.online = false;
+    clearOnline(user);
   });
 }
 

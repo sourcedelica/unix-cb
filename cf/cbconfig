@@ -1,7 +1,7 @@
 URESSIZ=1
 CBINIT=/Users/ericpederson/Desktop/SKYNET/cb
 UNIXWHO=/usr/bin/who
-HOMEREC
+HOMEREC=0
 CBHELP=cbhelp
 CMDFILE=skycommands
 ENVPAID=PAID
