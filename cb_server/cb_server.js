@@ -142,11 +142,22 @@ function createNewUser(client, data) {
           client.write('Enter a password: ');
           client.once('data', gotPassword);
         } else {
-          createUser(username, password, function (err, user) {
-            if (err != null) {
-              fatal(err);
+          client.write('Enter it again to be sure: ')
+          client.once('data', function (data) {
+            client.write('\r\n');
+            var password2 = rtrim(data);
+            if (password == password2) {
+              createUser(username, password, function (err, user) {
+                if (err != null) {
+                  fatal(err);
+                } else {
+                  enterCB(client, user);
+                }
+              });
             } else {
-              enterCB(client, user);
+              client.write('Passwords do not match.\r\n\r\n');
+              client.write('Enter a password: ');
+              client.once('data', gotPassword);
             }
           });
         }
