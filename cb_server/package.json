@@ -15,6 +15,7 @@
     "bcrypt": "latest",
     "hiredis": "latest",
     "redis": "latest",
+    "telnet": "ggrossman/telnetjs",
     "pty": "chjj/pty.js"
   }
 }
