@@ -16,11 +16,11 @@ input and one for output (there were no threads back in those days, and no BSD `
 I put the code up on GitHub for sentimental reasons. I would have put up all of the code for Skynet but unfortunately it appears to be lost forever...   
 
 ## Contributors
-- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf.
+- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf, got Dorky chat working, and put a Node.js telnet/login server in front of CB.
 
 ## To Do
 - Get it ready to run on sourcedelica.com.
-    - Currently CB assumes users are logged in.  Ideally it should work without being logged in (just using telnet protcol).  Though in the short term I may just add users on the sourcedelica box with a shell of CB.
+    - Add an embedded DB to store user/passwords persistently.
 
 ## Installation
 Make sure you have the flex library installed.  For example, `yum install flex`. You will also need autoconf and automake.
