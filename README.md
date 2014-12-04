@@ -16,7 +16,7 @@ input and one for output (there were no threads back in those days, and no BSD `
 I put the code up on GitHub for sentimental reasons. I would have put up all of the code for Skynet but unfortunately it appears to be lost forever...   
 
 ## Contributors
-- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf, got Dorky chat working, put a Node.js telnet/login server in front of CB, storing the user records in Redis.
+- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf and Travis, got Dorky chat working, put a Node.js telnet/login server in front of CB, storing the user records in Redis.
 
 ## To Do
 - Get it ready to run on sourcedelica.com.
