@@ -32,5 +32,10 @@ module.exports = {
 
   createUser: function (user, callback) {
     fs.writeFile(userPath(user.username), JSON.stringify(user), callback);
+  },
+
+  updateUser: function (user, callback) {
+    fs.writeFile(userPath(user.username), JSON.stringify(user), callback);
   }
+
 }

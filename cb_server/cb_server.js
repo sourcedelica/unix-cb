@@ -15,7 +15,6 @@
 //
 //    cd cb_server
 //    npm install
-//    export USE_REDIS=T
 //    node cb_server.js
 //    telnet localhost 8888
 //
@@ -33,9 +32,13 @@
 //
 
 var path = require('path');
+var http = require('http');
+var net  = require('net');
+var url  = require('url');
 
-var CB_PATH = process.env.CB_PATH || path.resolve('../cb/CB');
-var CB_PORT = process.env.CB_PORT || 8888;
+var CB_PATH  = process.env.CB_PATH || path.resolve('../cb/CB');
+var CB_PORT  = process.env.CB_PORT || 8888;
+var API_PORT = process.env.API_PORT || 8889;
 
 var STORAGE_ENGINE = process.env.STORAGE_ENGINE || "file";
 var store = require('./' + STORAGE_ENGINE + '_store.js');
@@ -45,6 +48,8 @@ var moment = require('moment');
 var bcrypt = require('bcrypt');
 
 var VALID_USERNAME_RE = /[a-z_][a-z0-9_]{0,30}/;
+var USER_URL_RE       = /^\/users\/([a-z_][a-z0-9_]{0,30})\/?/;
+var KEY_VALUE_RE      = /^([A-Za-z0-9_]+)=(.*)$/;
 
 function rtrim(s) {
   return s.toString().replace(/\s+$/,'');
@@ -187,7 +192,7 @@ function CBClient(client) {
       cols: 80,
       rows: 30,
       cwd: process.env.HOME,
-      env: {PAID:'T', LOGNAME:user.username}
+      env: {PAID:'T', LOGNAME:user.username, HOMEREC:0, API_URL:'http://127.0.0.1:'+API_PORT}
     });
     client.telnetCommand(telnet.WILL, telnet.OPT_SUPPRESS_GO_AHEAD);
     client.telnetCommand(telnet.WILL, telnet.OPT_ECHO);
@@ -216,6 +221,67 @@ function CBClient(client) {
   client.write('Enter "new" if you are a new user.\r\n')
   login(3);
 }
+
+function toRecord(user)
+{
+  var s = "";
+  for (var key in user) {
+    s += key.toUpperCase() + "=" + user[key] + '\n';
+  }
+  return s;
+}
+
+function updateFromRecord(user, record)
+{
+  var lines = record.split('\n');
+  for (var i=0, n=lines.length; i<n; i++) {
+    var s = lines[i];
+    var m = s.match(KEY_VALUE_RE);
+    if (m) {
+      user[m[1].toLowerCase()] = m[2];
+    } else if (s != '') {
+      // Bare option flag
+      user[s.toLowerCase()] = true;
+    }
+  }
+}
+
+var serverAPI = http.createServer(function (req, res) {
+  var m = req.url.match(USER_URL_RE);
+  if (m) {
+    var username = m[1];
+    store.getUser(username, function (err, user) {
+      if (err != null) {
+        res.writeHead(500, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({error:{message:'Could not find user'}}));
+      } else if (req.method == 'PUT') {
+        var body = '';
+        req.on('data', function(chunk) {
+          body += chunk.toString();
+        })
+        req.on('end', function() {
+          updateFromRecord(user, body);
+          store.updateUser(user, function (err) {
+            if (err != null) {
+              res.writeHead(500, {'Content-Type': 'application/json'});
+              res.end(JSON.stringify({error:{message:err.toString()}}));
+            } else {
+              res.writeHead(200, {'Content-Type': 'text/plain'});
+              res.end(toRecord(user));
+            }
+          });
+        });
+      } else {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end(toRecord(user));
+      }
+    });
+  } else {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('404 Not Found\r\n');
+  }
+})
+serverAPI.listen(API_PORT);
 
 var server = new telnet.Server(CBClient);
 server.listen(CB_PORT);

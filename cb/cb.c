@@ -25,6 +25,10 @@
 #include "cbetc.h"
 #include "cbcfg.h"
 
+#if HAVE_LIBCURL
+#include <curl/curl.h>
+#endif
+
 /*
  *  Unix-CB
  *
@@ -415,6 +419,146 @@ sds get_user_record_path(char *userid)
     }
 }
 
+#if HAVE_LIBCURL
+sds get_user_record_url(char *userid)
+{
+    return sdscat(sdscat(sdsnew(API_URL), "/users/"), userid);
+}
+
+static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    size_t realsize = size*nmemb;
+    sds *text = (sds*)userp;
+    *text = sdscatlen(*text, contents, realsize);
+    return realsize;
+}
+#endif
+
+static sds read_user_record_text(char *username)
+{
+    sds path, text;
+    FILE *fp;
+    size_t len;
+
+    #if HAVE_LIBCURL
+    CURL *curl;
+    CURLcode res;
+    sds url;
+    if (API_URL) {
+        curl = curl_easy_init();
+        if (!curl) {
+            return NULL;
+        }
+        url = get_user_record_url(username);
+        text = sdsempty();
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&text);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Unix-CB/1.0");
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        if (res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            return NULL;
+        }
+        sdsfree(url);
+        return text;
+    }
+    #endif
+
+    path = get_user_record_path(username);
+    if ((fp = fopen(path, "r")) == NULL) {
+        return NULL;
+    } else {
+        fseek(fp, 0L, SEEK_END);
+        len = ftell(fp);
+        rewind(fp);
+        text = sdsnewlen(NULL, len);
+        fread(text, len, 1, fp);
+        fclose(fp);
+        return text;
+    }
+}
+
+#if HAVE_LIBCURL
+struct curl_read_data
+{
+    char *data;
+    size_t len;
+};
+
+static size_t read_callback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    struct curl_read_data *read_data = (struct curl_read_data*)userp;
+    size_t curl_size = nmemb * size;
+    size_t to_copy = (read_data->len < curl_size) ? read_data->len : curl_size;
+    memcpy(contents, read_data->data, to_copy);
+    read_data->len -= to_copy;
+    read_data->data += to_copy;
+    return to_copy;
+}
+
+static size_t dummy_write_callback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    size_t realsize = size*nmemb;
+    return realsize;
+}
+#endif
+
+static int write_user_record_text(char *username, char *text)
+{
+    sds path;
+    FILE *fp;
+	int um;
+    size_t len = strlen(text);
+
+    #if HAVE_LIBCURL
+    struct curl_read_data read_data;
+    CURL *curl;
+    CURLcode res;
+    sds url;
+    if (API_URL) {
+        curl = curl_easy_init();
+        if (!curl) {
+            return -1;
+        }
+        url = get_user_record_url(username);
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+        curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+        curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+        curl_easy_setopt(curl, CURLOPT_READDATA, (void *)&read_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, dummy_write_callback);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Unix-CB/1.0");
+        read_data.data = text;
+        read_data.len = len;
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        if (res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            return -1;
+        }
+        sdsfree(url);
+        return 0;
+    }
+    #endif
+
+    path = get_user_record_path(username);
+	um = umask( CBUMASK );
+    fp = fopen(path, "w+");
+	sdsfree(path);
+	if (fp == NULL) {
+		umask(um);
+        return -1;
+    } else {
+        fwrite(text, len, 1, fp);
+        fclose(fp);
+		wrquota();
+		umask(um);
+        return 0;
+    }
+}
+
 STATIC int rdrec( ptemp )
 struct ulrec *ptemp;
 {
@@ -425,15 +569,9 @@ struct ulrec *ptemp;
      *
      */
 
-    FILE *f;
-    char s[80], *x;
-    int i, nodice;
-    sds user_record_path = get_user_record_path(guserid);
-
-    nodice = 0;
-    if( (f= fopen(user_record_path, "r")) == NULL )
-        nodice++;
-    sdsfree(user_record_path);
+    char *x;
+    int i, numlines, lineno;
+    sds text, *lines;
 
     ptemp->sqs = SQNULL;
     ptemp->kvotes = 0;
@@ -454,11 +592,15 @@ struct ulrec *ptemp;
     strncpy(ptemp->ttyname, ttyname(0), L_ttyname-1);
     ptemp->ttyname[L_ttyname-1] = '\0';
 
-    if( nodice )
-        return( 0 );
+    text = read_user_record_text(guserid);
+    if (text == NULL) {
+        return (0);
+    }
 
-    while( fgets(s,80,f) != NULL )
-        if( strtok(s,"=\n") != NULL )
+    lines = sdssplitlen(text, sdslen(text), "\n", 1, &numlines);
+    for (lineno=0; lineno<numlines; lineno++) {
+        sds s = lines[lineno];
+        if( strtok(s,"=\n") != NULL ) {
             if( !strcmp(s,R_HANDLE) ){
                 x = strtok(NULL,"\n");
                 if( x != NULL && *x != 0 )
@@ -479,12 +621,18 @@ struct ulrec *ptemp;
             } else if( !strcmp( s, R_LASTRP ) ){
                 x = strtok( NULL, "\n" );
                 ptemp->rlastp = lookup( x, NULL );
-            } else
-                for( i= 0; opta[i] != NULL; i++ )
-                    if( !strcmp(opta[i],s) )
+            } else {
+                for( i= 0; opta[i] != NULL; i++ ) {
+                    if( !strcmp(opta[i],s) ) {
                         ptemp->opts |= opto[i];
+                    }
+                }
+            }
+        }
+    }
+    sdsfreesplitres(lines, numlines);
+    sdsfree(text);
 
-    fclose(f);
     return(0);
 }
 
@@ -513,36 +661,27 @@ int slot;
      *  Writes user record file
      *
      */
-
-    FILE *f;
-    char s[80];
-    int i, um;
-    sds user_record_path;
+	sds s;
+    int i;
 
     if( slot < 0 || slot >= ulsize )
         return;
-    user_record_path = get_user_record_path(ulog[slot].userid);
-    um = umask( CBUMASK );
-    f = fopen(user_record_path, "w+");
-    sdsfree(user_record_path);
-    if (f == NULL) {
-        umask( um );
-        return;
-    }
-    fprintf(f,"%s=%s\n",R_HANDLE,ulog[slot].handle);
-    fprintf(f,"%s=%s\n",R_FORMAT,ulog[slot].format);
-    fprintf(f,"%s=%s\n",R_AFORMAT,ulog[slot].aformat);
-    fprintf(f,"%s=%c\n",R_LFCHAR,ulog[slot].lfchar);
+
+	s = sdsempty();
+    s = sdscatprintf(s,"%s=%s\n",R_HANDLE,ulog[slot].handle);
+    s = sdscatprintf(s,"%s=%s\n",R_FORMAT,ulog[slot].format);
+    s = sdscatprintf(s,"%s=%s\n",R_AFORMAT,ulog[slot].aformat);
+    s = sdscatprintf(s,"%s=%c\n",R_LFCHAR,ulog[slot].lfchar);
     if( ulog[slot].lastp != S_NOBODY )
-        fprintf(f, "%s=%s\n", R_LASTP, ulog[ulog[slot].lastp].userid);
+        s = sdscatprintf(s, "%s=%s\n", R_LASTP, ulog[ulog[slot].lastp].userid);
     if( ulog[slot].rlastp != S_NOBODY )
-        fprintf(f, "%s=%s\n", R_LASTRP, ulog[ulog[slot].rlastp].userid);
+        s = sdscatprintf(s, "%s=%s\n", R_LASTRP, ulog[ulog[slot].rlastp].userid);
     for( i=0; opta[i] != NULL; i++ )
         if( ulog[slot].opts & opto[i] )
-            fprintf(f,"%s\n",opta[i]);
-    fclose(f);
-    wrquota();
-    umask( um );
+            s = sdscatprintf(s,"%s\n",opta[i]);
+
+	write_user_record_text(ulog[slot].userid, s);
+	sdsfree(s);
 }
 
 
