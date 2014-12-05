@@ -26,7 +26,13 @@ module.exports = {
   },
 
   createUser: function (user, callback) {
-    redisClient.hmset(redisUserKey(username), user, function (err) {
+    redisClient.hmset(redisUserKey(user.username), user, function (err) {
+      callback(err, err != null ? null : user);
+    });
+  },
+
+  updateUser: function (user, callback) {
+    redisClient.hmset(redisUserKey(user.username), user, function (err) {
       callback(err, err != null ? null : user);
     });
   }

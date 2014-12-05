@@ -8,4 +8,4 @@ cbinit_SOURCES = cbinit.c cbcfg.c
 
 cedit_SOURCES = cedit.c
 
-LDADD = ../sub/libsub.a @LEXLIB@
+LDADD = ../sub/libsub.a @LEXLIB@ @LIBCURL@

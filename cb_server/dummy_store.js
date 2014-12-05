@@ -18,5 +18,10 @@ module.exports = {
   createUser: function (user, callback) {
     USERS[user.username] = user;
     callback(null);
+  },
+
+  updateUser: function (user, callback) {
+    USERS[user.username] = user;
+    callback(null);
   }
 }

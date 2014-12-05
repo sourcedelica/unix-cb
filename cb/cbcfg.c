@@ -97,6 +97,7 @@ int QUOTA=  -1; /* Quota of /v minutes per time period, -1 for none */
 char *CBINIT=   "cbinit";   /* Name including path if needed of cbinit */
 int DEBUG=  0;  /* Debug value */
 char *UNIXWHO=  "who";  /* Name of who program to run for /w */
+char *API_URL = NULL; /* URL of RESTful API */
 
 /* Make sure you update the cbcfg() fucnction for any added values,
     in addition to the cbcfg.h file */
@@ -256,6 +257,14 @@ char *fn;
 
 /*********************************************************************/
 
+/* getctlenv makes it possible for environment variables to override the cbconfig file */
+char *getctlenv(char *name, char **p)
+{
+    extern char *getctl();
+    char *result = getenv(name);
+    return result ? result : getctl(name, p);
+}
+
 int cbcfg( cfname )
 char *cfname;
 {
@@ -265,7 +274,6 @@ char *cfname;
 
     char s[128], *x, **p;
     int i;
-    extern char *getctl();
 
     strcpy( s, basepath() );
     strcat( s, PATHSEP );
@@ -276,171 +284,173 @@ char *cfname;
     if( (p= rdctl( s )) == (char **)NULL )
         return( -1 );
 
-    if( (x= getctl("URESSIZ", p)) != NULL )
+    if( (x= getctlenv("URESSIZ", p)) != NULL )
         URESSIZ = atoi(x);
-    if( (x= getctl("FSIZE", p)) != NULL )
+    if( (x= getctlenv("FSIZE", p)) != NULL )
         FSIZE = atoi(x);
-    if( (x= getctl("CBKEY", p)) != NULL )
+    if( (x= getctlenv("CBKEY", p)) != NULL )
         CBKEY = atoi(x);
-    if( (x= getctl("HOMEREC", p)) != NULL )
+    if( (x= getctlenv("HOMEREC", p)) != NULL )
         if( *x == 0 ) HOMEREC = 1;
         else HOMEREC = atoi(x);
-    if( (x= getctl("RECNAME", p)) != NULL )
+    if( (x= getctlenv("RECNAME", p)) != NULL )
         RECNAME = x;
-    if( (x= getctl("MAXCHAN", p)) != NULL )
+    if( (x= getctlenv("MAXCHAN", p)) != NULL )
         MAXCHAN = atoi(x);
-    if( (x= getctl("LIMCHAN", p)) != NULL )
+    if( (x= getctlenv("LIMCHAN", p)) != NULL )
         if( *x == 0 ) LIMCHAN = 1;
         else LIMCHAN = atoi(x);
-    if( (x= getctl("LIMBASE", p)) != NULL )
+    if( (x= getctlenv("LIMBASE", p)) != NULL )
         LIMBASE = atoi(x);
-    if( (x= getctl("LIMIT", p)) != NULL )
+    if( (x= getctlenv("LIMIT", p)) != NULL )
         LIMIT = atoi(x);
-    if( (x= getctl("MONCHAN", p)) != NULL )
+    if( (x= getctlenv("MONCHAN", p)) != NULL )
         MONCHAN = atoi(x);
-    if( (x= getctl("MONPAY", p)) != NULL )
+    if( (x= getctlenv("MONPAY", p)) != NULL )
         if( *x == 0 ) MONPAY = 1;
         else MONPAY = atoi(x);
-    if( (x= getctl("MONBASE", p)) != NULL )
+    if( (x= getctlenv("MONBASE", p)) != NULL )
         MONBASE = atoi(x);
-    if( (x= getctl("MONLIM", p)) != NULL )
+    if( (x= getctlenv("MONLIM", p)) != NULL )
         MONLIM = atoi(x);
-    if( (x= getctl("LFCHAR", p)) != NULL )
+    if( (x= getctlenv("LFCHAR", p)) != NULL )
         LFCHAR = x;
-    if( (x= getctl("MAXNL", p)) != NULL )
+    if( (x= getctlenv("MAXNL", p)) != NULL )
         MAXNL = atoi(x);
-    if( (x= getctl("MAXMYOUT", p)) != NULL )
+    if( (x= getctlenv("MAXMYOUT", p)) != NULL )
         MAXMYOUT = atoi(x);
-    if( (x= getctl("MAXPOUT", p)) != NULL )
+    if( (x= getctlenv("MAXPOUT", p)) != NULL )
         MAXPOUT = atoi(x);
-    if( (x= getctl("MAXUOUT", p)) != NULL )
+    if( (x= getctlenv("MAXUOUT", p)) != NULL )
         MAXUOUT = atoi(x);
-    if( (x= getctl("FAKEOUT", p)) != NULL )
+    if( (x= getctlenv("FAKEOUT", p)) != NULL )
         FAKEOUT = x;
-    if( (x= getctl("AFORDEF", p)) != NULL )
+    if( (x= getctlenv("AFORDEF", p)) != NULL )
         AFORDEF = x;
-    if( (x= getctl("DOSHELL", p)) != NULL )
+    if( (x= getctlenv("DOSHELL", p)) != NULL )
         DOSHELL = x;
-    if( (x= getctl("DOFORM", p)) != NULL )
+    if( (x= getctlenv("DOFORM", p)) != NULL )
         DOFORM = x;
-    if( (x= getctl("DOINACT", p)) != NULL )
+    if( (x= getctlenv("DOINACT", p)) != NULL )
         DOINACT = x;
-    if( (x= getctl("DOTYPE", p)) != NULL )
+    if( (x= getctlenv("DOTYPE", p)) != NULL )
         DOTYPE = x;
-    if( (x= getctl("DODORK", p)) != NULL )
+    if( (x= getctlenv("DODORK", p)) != NULL )
         DODORK = x;
-    if( (x= getctl("PAIDLF", p)) != NULL )
+    if( (x= getctlenv("PAIDLF", p)) != NULL )
         if( *x == 0 ) PAIDLF = 1;
         else PAIDLF = atoi(x);
-    if( (x= getctl("PAIDDC", p)) != NULL )
+    if( (x= getctlenv("PAIDDC", p)) != NULL )
         if( *x == 0 ) PAIDDC = 1;
         else PAIDDC = atoi(x);
-    if( (x= getctl("CBLOGIN", p)) != NULL )
+    if( (x= getctlenv("CBLOGIN", p)) != NULL )
         CBLOGIN = x;
-    if( (x= getctl("LOCKEDMSG", p)) != NULL )
+    if( (x= getctlenv("LOCKEDMSG", p)) != NULL )
         LOCKEDMSG = x;
-    if( (x= getctl("ICTLVAL", p)) != NULL )
+    if( (x= getctlenv("ICTLVAL", p)) != NULL )
         ICTLVAL = (int)strtol(x, (char **)NULL, 0);
-    if( (x= getctl("INITCHAN", p)) != NULL )
+    if( (x= getctlenv("INITCHAN", p)) != NULL )
         INITCHAN = atoi(x);
-    if( (x= getctl("PINITCHAN", p)) != NULL )
+    if( (x= getctlenv("PINITCHAN", p)) != NULL )
         PINITCHAN = atoi(x);
-    if( (x= getctl("UINITCHAN", p)) != NULL )
+    if( (x= getctlenv("UINITCHAN", p)) != NULL )
         UINITCHAN = atoi(x);
-    if( (x= getctl("RCLOW", p)) != NULL )
+    if( (x= getctlenv("RCLOW", p)) != NULL )
         RCLOW = atoi(x);
-    if( (x= getctl("RCHIGH", p)) != NULL )
+    if( (x= getctlenv("RCHIGH", p)) != NULL )
         RCHIGH = atoi(x);
-    if( (x= getctl("FORCEH", p)) != NULL )
+    if( (x= getctlenv("FORCEH", p)) != NULL )
         if( *x == 0 ) FORCEH = 1;
         else FORCEH= atoi(x);
-    if( (x= getctl("FORCEL", p)) != NULL )
+    if( (x= getctlenv("FORCEL", p)) != NULL )
         if( *x == 0 ) FORCEL = 1;
         else FORCEL = atoi(x);
-    if( (x= getctl("AFORCEH", p)) != NULL )
+    if( (x= getctlenv("AFORCEH", p)) != NULL )
         if( *x == 0 ) AFORCEH = 1;
         else AFORCEH = atoi(x);
-    if( (x= getctl("AFORCEL", p)) != NULL )
+    if( (x= getctlenv("AFORCEL", p)) != NULL )
         if( *x == 0 ) AFORCEL = 1;
         else AFORCEL = atoi(x);
-    if( (x= getctl("CMDFILE", p)) != NULL )
+    if( (x= getctlenv("CMDFILE", p)) != NULL )
         CMDFILE = x;
-    if( (x= getctl("OUTFILE", p)) != NULL )
+    if( (x= getctlenv("OUTFILE", p)) != NULL )
         OUTFILE = x;
-    if( (x= getctl("CBDIR", p)) != NULL )
+    if( (x= getctlenv("CBDIR", p)) != NULL )
         CBDIR = x;
-    if( (x= getctl("RECDIR", p)) != NULL )
+    if( (x= getctlenv("RECDIR", p)) != NULL )
         RECDIR = x;
-    if( (x= getctl("MSGPBAD", p)) != NULL )
+    if( (x= getctlenv("MSGPBAD", p)) != NULL )
         MSGPBAD = x;
-    if( (x= getctl("MSGSBAD", p)) != NULL )
+    if( (x= getctlenv("MSGSBAD", p)) != NULL )
         MSGSBAD = x;
-    if( (x= getctl("MSGVBAD", p)) != NULL )
+    if( (x= getctlenv("MSGVBAD", p)) != NULL )
         MSGVBAD = x;
-    if( (x= getctl("MSGCBAD", p)) != NULL )
+    if( (x= getctlenv("MSGCBAD", p)) != NULL )
         MSGCBAD = x;
-    if( (x= getctl("ENVPAID", p)) != NULL )
+    if( (x= getctlenv("ENVPAID", p)) != NULL )
         ENVPAID = x;
-    if( (x= getctl("ENVSYSOP", p)) != NULL )
+    if( (x= getctlenv("ENVSYSOP", p)) != NULL )
         ENVSYSOP = x;
-    if( (x= getctl("ENVVIP", p)) != NULL )
+    if( (x= getctlenv("ENVVIP", p)) != NULL )
         ENVVIP = x;
-    if( (x= getctl("ENVCOSYSOP", p)) != NULL )
+    if( (x= getctlenv("ENVCOSYSOP", p)) != NULL )
         ENVCOSYSOP = x;
-    if( (x= getctl("ENVVALID", p)) != NULL )
+    if( (x= getctlenv("ENVVALID", p)) != NULL )
         ENVVALID = x;
-    if( (x= getctl("WRITELEV", p)) != NULL )
+    if( (x= getctlenv("WRITELEV", p)) != NULL )
         WRITELEV = atoi(x);
-    if( (x= getctl("STTY0", p)) != NULL )
+    if( (x= getctlenv("STTY0", p)) != NULL )
         if( *x == 0 ) STTY0 = 1;
         else STTY0 = atoi(x);
-    if( (x= getctl("DAILY", p)) != NULL )
+    if( (x= getctlenv("DAILY", p)) != NULL )
         DAILY = x;
-    if( (x= getctl("KPERCENT", p)) != NULL )
+    if( (x= getctlenv("KPERCENT", p)) != NULL )
         KPERCENT = atoi(x);
-    if( (x= getctl("COACT", p)) != NULL )
+    if( (x= getctlenv("COACT", p)) != NULL )
         if( *x == 0 ) COACT = 1;
         else COACT = atoi(x);
-    if( (x= getctl("COPASSX", p)) != NULL )
+    if( (x= getctlenv("COPASSX", p)) != NULL )
         if( *x == 0 ) COPASSX = 1;
         else COPASSX = atoi(x);
-    if( (x= getctl("COONE", p)) != NULL )
+    if( (x= getctlenv("COONE", p)) != NULL )
         if( *x == 0 ) COONE = 1;
         else COONE = atoi(x);
-    if( (x= getctl("COPPA", p)) != NULL )
+    if( (x= getctlenv("COPPA", p)) != NULL )
         if( *x == 0 ) COPPA = 1;
         else COPPA = atoi(x);
-    if( (x= getctl("COLOCKOV", p)) != NULL )
+    if( (x= getctlenv("COLOCKOV", p)) != NULL )
         if( *x == 0 ) COLOCKOV = 1;
         else COLOCKOV = atoi(x);
-    if( (x= getctl("CONEGV", p)) != NULL )
+    if( (x= getctlenv("CONEGV", p)) != NULL )
         if( *x == 0 ) CONEGV = 1;
         else CONEGV = atoi(x);
-    if( (x= getctl("COKGLOB", p)) != NULL )
+    if( (x= getctlenv("COKGLOB", p)) != NULL )
         if( *x == 0 ) COKGLOB = 1;
         else COKGLOB = atoi(x);
-    if( (x= getctl("COKINACT", p)) != NULL )
+    if( (x= getctlenv("COKINACT", p)) != NULL )
         if( *x == 0 ) COKINACT = 1;
         else COKINACT = atoi(x);
-    if( (x= getctl("COKPAID", p)) != NULL )
+    if( (x= getctlenv("COKPAID", p)) != NULL )
         if( *x == 0 ) COKPAID = 1;
         else COKPAID = atoi(x);
-    if( (x= getctl("LOGCOPAS", p)) != NULL )
+    if( (x= getctlenv("LOGCOPAS", p)) != NULL )
         if( *x == 0 ) LOGCOPAS = 1;
         else LOGCOPAS = atoi(x);
-    if( (x= getctl("NUMSLOTS", p)) != NULL )
+    if( (x= getctlenv("NUMSLOTS", p)) != NULL )
         NUMSLOTS = atoi(x);
-    if( (x= getctl("QUOTA", p)) != NULL )
+    if( (x= getctlenv("QUOTA", p)) != NULL )
         QUOTA = atoi(x);
-    if( (x= getctl("TSINTERVAL", p)) != NULL )
+    if( (x= getctlenv("TSINTERVAL", p)) != NULL )
         TSINTERVAL = atoi(x);
-    if( (x= getctl("CBINIT", p)) != NULL )
+    if( (x= getctlenv("CBINIT", p)) != NULL )
         CBINIT = x;
-    if( (x= getctl("DEBUG", p)) != NULL )
+    if( (x= getctlenv("DEBUG", p)) != NULL )
         if( *x == 0 ) DEBUG = 1;
         else DEBUG = atoi(x);
-    if( (x= getctl("UNIXWHO", p)) != NULL )
+    if( (x= getctlenv("UNIXWHO", p)) != NULL )
         UNIXWHO = x;
+    if( (x= getctlenv("API_URL", p)) != NULL )
+        API_URL = x;
 
     return( loadcmds( CMDFILE ) );
 }
