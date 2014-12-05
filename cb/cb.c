@@ -419,6 +419,7 @@ sds get_user_record_path(char *userid)
     }
 }
 
+#if HAVE_LIBCURL
 sds get_user_record_url(char *userid)
 {
     return sdscat(sdscat(sdsnew(API_URL), "/users/"), userid);
@@ -431,6 +432,7 @@ static size_t write_callback(void *contents, size_t size, size_t nmemb, void *us
     *text = sdscatlen(*text, contents, realsize);
     return realsize;
 }
+#endif
 
 static sds read_user_record_text(char *username)
 {
@@ -478,6 +480,7 @@ static sds read_user_record_text(char *username)
     }
 }
 
+#if HAVE_LIBCURL
 struct curl_read_data
 {
     char *data;
@@ -500,6 +503,7 @@ static size_t dummy_write_callback(void *contents, size_t size, size_t nmemb, vo
     size_t realsize = size*nmemb;
     return realsize;
 }
+#endif
 
 static int write_user_record_text(char *username, char *text)
 {
@@ -507,9 +511,9 @@ static int write_user_record_text(char *username, char *text)
     FILE *fp;
 	int um;
     size_t len = strlen(text);
-    struct curl_read_data read_data;
 
     #if HAVE_LIBCURL
+    struct curl_read_data read_data;
     CURL *curl;
     CURLcode res;
     sds url;
