@@ -509,7 +509,7 @@ static int write_user_record_text(char *username, char *text)
 {
     sds path;
     FILE *fp;
-	int um;
+    int um;
     size_t len = strlen(text);
 
     #if HAVE_LIBCURL
@@ -544,17 +544,17 @@ static int write_user_record_text(char *username, char *text)
     #endif
 
     path = get_user_record_path(username);
-	um = umask( CBUMASK );
+    um = umask( CBUMASK );
     fp = fopen(path, "w+");
-	sdsfree(path);
-	if (fp == NULL) {
-		umask(um);
+    sdsfree(path);
+    if (fp == NULL) {
+        umask(um);
         return -1;
     } else {
         fwrite(text, len, 1, fp);
         fclose(fp);
-		wrquota();
-		umask(um);
+        wrquota();
+        umask(um);
         return 0;
     }
 }
@@ -661,13 +661,13 @@ int slot;
      *  Writes user record file
      *
      */
-	sds s;
+    sds s;
     int i;
 
     if( slot < 0 || slot >= ulsize )
         return;
 
-	s = sdsempty();
+    s = sdsempty();
     s = sdscatprintf(s,"%s=%s\n",R_HANDLE,ulog[slot].handle);
     s = sdscatprintf(s,"%s=%s\n",R_FORMAT,ulog[slot].format);
     s = sdscatprintf(s,"%s=%s\n",R_AFORMAT,ulog[slot].aformat);
@@ -680,8 +680,8 @@ int slot;
         if( ulog[slot].opts & opto[i] )
             s = sdscatprintf(s,"%s\n",opta[i]);
 
-	write_user_record_text(ulog[slot].userid, s);
-	sdsfree(s);
+    write_user_record_text(ulog[slot].userid, s);
+    sdsfree(s);
 }
 
 
