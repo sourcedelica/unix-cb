@@ -16,11 +16,7 @@ input and one for output (there were no threads back in those days, and no BSD `
 I put the code up on GitHub for sentimental reasons. I would have put up all of the code for Skynet but unfortunately it appears to be lost forever...   
 
 ## Contributors
-- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf and Travis, got Dorky chat working, put a Node.js telnet/login server in front of CB, storing the user records in Redis.
-
-## To Do
-- Get it ready to run on sourcedelica.com.
-    - Add an embedded DB to store user/passwords persistently.
+- Gary Grossman got the code in shape so it would compile cleanly with modern compilers and lexers.  He also got the build system whipped into shape with Autoconf and Travis, got Dorky chat working, put a Node.js telnet/login server in front of CB, and added multiple user record storage options.  Thanks Gary!
 
 ## Installation
 Make sure you have the flex library installed.  For example, `yum install flex`. You will also need autoconf and automake.
