@@ -1,4 +1,5 @@
-#lib/cb/cbout
+lib/cb/cbout
+lib/cb/recs
 
 # Object files
 *.o
