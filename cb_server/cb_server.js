@@ -89,7 +89,9 @@ function CBClient(client) {
 
   function createNewUser(data) {
     var username = rtrim(data);
-    if (!username.match(VALID_USERNAME_RE)) {
+    if (username.length == 0) {
+      startLogin(2);
+    } else if (!username.match(VALID_USERNAME_RE)) {
       client.write('Sorry, your username contained invalid characters.\r\n');
       client.write('Usernames must consist only of lowercase letters, digits and _, and must begin with a letter.\r\n\r\n');
       client.write('Enter the username you would like to use: ');
@@ -108,7 +110,9 @@ function CBClient(client) {
           function gotPassword(data) {
             client.write('\r\n');
             var password = rtrim(data);
-            if (data.length < 5) {
+            if (password.length == 0) {
+              startLogin(2);
+            } else if (password.length < 5) {
               client.write('Password must be at least 5 characters.\r\n\r\n');
               client.write('Enter a password: ');
               client.once('data', gotPassword);
@@ -144,12 +148,18 @@ function CBClient(client) {
     }
   }
 
+  function startLogin(retriesLeft) {
+    echoOn();
+    client.write('\r\nEnter "new" if you are a new user.\r\n');
+    login(retriesLeft);
+  }
+
   function login(retriesLeft) {
     client.write('login: ')
     client.once('data', function (data) {
       var username = rtrim(data);
       if (username == 'new') {
-        client.write('Welcome!\r\n\r\n');
+        client.write('\r\n');
         client.write('Enter the username you would like to use: ');
         client.once('data', createNewUser);
       } else {
@@ -217,9 +227,8 @@ function CBClient(client) {
       client.telnetCommand(telnet.WONT, opt);
     }
   });
-  client.write('Welcome to MoHo (Nostlgia Edition)\r\n\r\n');
-  client.write('Enter "new" if you are a new user.\r\n')
-  login(3);
+  client.write('Welcome to MoHo (Nostlgia Edition)\r\n');
+  startLogin(3);
 }
 
 function toRecord(user)
