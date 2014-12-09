@@ -12,6 +12,10 @@ var redisClient = redis.createClient(
   {}
 );
 
+redisClient.on("error", function (err) {
+  console.log("Redis error: " + err);
+});
+
 function redisUserKey(username) {
   return "SkynetUser:"+username;
 }
